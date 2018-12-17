@@ -109,31 +109,46 @@ bool FourChannelAdapter::is_StopMove_allowed(TANGO_UNUSED(const CORBA::Any &any)
 
 //--------------------------------------------------------
 /**
- *	Method      : FourChannelAdapter::is_ResetMotor_allowed()
- *	Description : Execution allowed for ResetMotor attribute
+ *	Method      : FourChannelAdapter::is_MoveToLefSteps_allowed()
+ *	Description : Execution allowed for MoveToLefSteps attribute
  */
 //--------------------------------------------------------
-bool FourChannelAdapter::is_ResetMotor_allowed(TANGO_UNUSED(const CORBA::Any &any))
+bool FourChannelAdapter::is_MoveToLefSteps_allowed(TANGO_UNUSED(const CORBA::Any &any))
 {
-	//	Not any excluded states for ResetMotor command.
-	/*----- PROTECTED REGION ID(FourChannelAdapter::ResetMotorStateAllowed) ENABLED START -----*/
+	//	Not any excluded states for MoveToLefSteps command.
+	/*----- PROTECTED REGION ID(FourChannelAdapter::MoveToLefStepsStateAllowed) ENABLED START -----*/
 	
-	/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::ResetMotorStateAllowed
+	/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::MoveToLefStepsStateAllowed
 	return true;
 }
 
 //--------------------------------------------------------
 /**
- *	Method      : FourChannelAdapter::is_Calibrate_allowed()
- *	Description : Execution allowed for Calibrate attribute
+ *	Method      : FourChannelAdapter::is_MoveToRightSteps_allowed()
+ *	Description : Execution allowed for MoveToRightSteps attribute
  */
 //--------------------------------------------------------
-bool FourChannelAdapter::is_Calibrate_allowed(TANGO_UNUSED(const CORBA::Any &any))
+bool FourChannelAdapter::is_MoveToRightSteps_allowed(TANGO_UNUSED(const CORBA::Any &any))
 {
-	//	Not any excluded states for Calibrate command.
-	/*----- PROTECTED REGION ID(FourChannelAdapter::CalibrateStateAllowed) ENABLED START -----*/
+	//	Not any excluded states for MoveToRightSteps command.
+	/*----- PROTECTED REGION ID(FourChannelAdapter::MoveToRightStepsStateAllowed) ENABLED START -----*/
 	
-	/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::CalibrateStateAllowed
+	/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::MoveToRightStepsStateAllowed
+	return true;
+}
+
+//--------------------------------------------------------
+/**
+ *	Method      : FourChannelAdapter::is_SetCurrentPosAsZero_allowed()
+ *	Description : Execution allowed for SetCurrentPosAsZero attribute
+ */
+//--------------------------------------------------------
+bool FourChannelAdapter::is_SetCurrentPosAsZero_allowed(TANGO_UNUSED(const CORBA::Any &any))
+{
+	//	Not any excluded states for SetCurrentPosAsZero command.
+	/*----- PROTECTED REGION ID(FourChannelAdapter::SetCurrentPosAsZeroStateAllowed) ENABLED START -----*/
+	
+	/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::SetCurrentPosAsZeroStateAllowed
 	return true;
 }
 

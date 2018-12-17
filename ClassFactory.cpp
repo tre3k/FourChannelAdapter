@@ -44,6 +44,7 @@
 
 void Tango::DServer::class_factory()
 {
+
 	//	Add method class init if needed
 	add_class(FourChannelAdapter_ns::FourChannelAdapterClass::init("FourChannelAdapter"));
 }

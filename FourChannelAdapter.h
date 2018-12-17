@@ -35,6 +35,9 @@
 
 #include <tango.h>
 
+#include "SerialPort.h"
+#include "MotorClass.h"
+
 
 /*----- PROTECTED REGION END -----*/	//	FourChannelAdapter.h
 
@@ -56,7 +59,12 @@ class FourChannelAdapter : public TANGO_BASE_CLASS
 
 /*----- PROTECTED REGION ID(FourChannelAdapter::Data Members) ENABLED START -----*/
 
-//	Add your own data members
+private:
+	int fd = 0;							// device file Descriptor
+	double currentPosition;
+	double  setCurrentPosition;
+
+	Motor::MotorClass *mc;
 
 /*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::Data Members
 
@@ -66,6 +74,10 @@ public:
 	Tango::DevULong	speed;
 	//	Channel:	channel of the motor
 	Tango::DevShort	channel;
+	//	ZeroPosition:	
+	Tango::DevDouble	zeroPosition;
+	//	Coeff:	Coeff for convert encoder value to units
+	Tango::DevDouble	coeff;
 
 //	Attribute data members
 public:
@@ -182,19 +194,28 @@ public:
 	virtual void stop_move();
 	virtual bool is_StopMove_allowed(const CORBA::Any &any);
 	/**
-	 *	Command ResetMotor related method
+	 *	Command MoveToLefSteps related method
 	 *	Description: 
 	 *
+	 *	@param argin 
 	 */
-	virtual void reset_motor();
-	virtual bool is_ResetMotor_allowed(const CORBA::Any &any);
+	virtual void move_to_lef_steps(Tango::DevLong argin);
+	virtual bool is_MoveToLefSteps_allowed(const CORBA::Any &any);
 	/**
-	 *	Command Calibrate related method
+	 *	Command MoveToRightSteps related method
+	 *	Description: 
+	 *
+	 *	@param argin 
+	 */
+	virtual void move_to_right_steps(Tango::DevLong argin);
+	virtual bool is_MoveToRightSteps_allowed(const CORBA::Any &any);
+	/**
+	 *	Command SetCurrentPosAsZero related method
 	 *	Description: 
 	 *
 	 */
-	virtual void calibrate();
-	virtual bool is_Calibrate_allowed(const CORBA::Any &any);
+	virtual void set_current_pos_as_zero();
+	virtual bool is_SetCurrentPosAsZero_allowed(const CORBA::Any &any);
 
 
 	//--------------------------------------------------------

@@ -48,6 +48,7 @@ namespace FourChannelAdapter_ns
 {
 /*----- PROTECTED REGION ID(FourChannelAdapterClass::classes for dynamic creation) ENABLED START -----*/
 
+static SP::SerialPort *sPort;
 
 /*----- PROTECTED REGION END -----*/	//	FourChannelAdapterClass::classes for dynamic creation
 
@@ -111,11 +112,11 @@ public:
 	{return (static_cast<FourChannelAdapter *>(dev))->is_StopMove_allowed(any);}
 };
 
-//	Command ResetMotor class definition
-class ResetMotorClass : public Tango::Command
+//	Command MoveToLefSteps class definition
+class MoveToLefStepsClass : public Tango::Command
 {
 public:
-	ResetMotorClass(const char   *name,
+	MoveToLefStepsClass(const char   *name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
@@ -123,22 +124,22 @@ public:
 				   Tango::DispLevel  level)
 	:Command(name,in,out,in_desc,out_desc, level)	{};
 
-	ResetMotorClass(const char   *name,
+	MoveToLefStepsClass(const char   *name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
 	:Command(name,in,out)	{};
-	~ResetMotorClass() {};
+	~MoveToLefStepsClass() {};
 	
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
-	{return (static_cast<FourChannelAdapter *>(dev))->is_ResetMotor_allowed(any);}
+	{return (static_cast<FourChannelAdapter *>(dev))->is_MoveToLefSteps_allowed(any);}
 };
 
-//	Command Calibrate class definition
-class CalibrateClass : public Tango::Command
+//	Command MoveToRightSteps class definition
+class MoveToRightStepsClass : public Tango::Command
 {
 public:
-	CalibrateClass(const char   *name,
+	MoveToRightStepsClass(const char   *name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
@@ -146,15 +147,38 @@ public:
 				   Tango::DispLevel  level)
 	:Command(name,in,out,in_desc,out_desc, level)	{};
 
-	CalibrateClass(const char   *name,
+	MoveToRightStepsClass(const char   *name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
 	:Command(name,in,out)	{};
-	~CalibrateClass() {};
+	~MoveToRightStepsClass() {};
 	
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
-	{return (static_cast<FourChannelAdapter *>(dev))->is_Calibrate_allowed(any);}
+	{return (static_cast<FourChannelAdapter *>(dev))->is_MoveToRightSteps_allowed(any);}
+};
+
+//	Command SetCurrentPosAsZero class definition
+class SetCurrentPosAsZeroClass : public Tango::Command
+{
+public:
+	SetCurrentPosAsZeroClass(const char   *name,
+	               Tango::CmdArgType in,
+				   Tango::CmdArgType out,
+				   const char        *in_desc,
+				   const char        *out_desc,
+				   Tango::DispLevel  level)
+	:Command(name,in,out,in_desc,out_desc, level)	{};
+
+	SetCurrentPosAsZeroClass(const char   *name,
+	               Tango::CmdArgType in,
+				   Tango::CmdArgType out)
+	:Command(name,in,out)	{};
+	~SetCurrentPosAsZeroClass() {};
+	
+	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
+	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
+	{return (static_cast<FourChannelAdapter *>(dev))->is_SetCurrentPosAsZero_allowed(any);}
 };
 
 
@@ -169,7 +193,10 @@ class FourChannelAdapterClass : public Tango::DeviceClass
 #endif
 {
 	/*----- PROTECTED REGION ID(FourChannelAdapterClass::Additionnal DServer data members) ENABLED START -----*/
-	
+
+	public:
+		//static SP::SerialPort *sP = sPort;
+		SP::SerialPort *sP;
 	
 	/*----- PROTECTED REGION END -----*/	//	FourChannelAdapterClass::Additionnal DServer data members
 
@@ -177,6 +204,8 @@ class FourChannelAdapterClass : public Tango::DeviceClass
 	public:
 		//	DevicePath:	Path to the device file for the MOXA RS485
 		string	devicePath;
+		//	ControllerNumber:	Number of controller
+		Tango::DevShort	controllerNumber;
 	public:
 		//	write class properties data members
 		Tango::DbData	cl_prop;

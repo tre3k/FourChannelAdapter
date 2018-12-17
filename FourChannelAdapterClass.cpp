@@ -79,7 +79,11 @@ FourChannelAdapterClass::FourChannelAdapterClass(string &s):Tango::DeviceClass(s
 	write_class_property();
 
 	/*----- PROTECTED REGION ID(FourChannelAdapterClass::constructor) ENABLED START -----*/
-	
+
+	sPort = new SP::SerialPort(devicePath.c_str());
+    sPort->controller_number = controllerNumber;
+	sP = sPort;										// share link for other class
+
 	/*----- PROTECTED REGION END -----*/	//	FourChannelAdapterClass::constructor
 
 	cout2 << "Leaving FourChannelAdapterClass constructor" << endl;
@@ -94,7 +98,9 @@ FourChannelAdapterClass::FourChannelAdapterClass(string &s):Tango::DeviceClass(s
 FourChannelAdapterClass::~FourChannelAdapterClass()
 {
 	/*----- PROTECTED REGION ID(FourChannelAdapterClass::destructor) ENABLED START -----*/
-	
+
+	//delete sPort;
+
 	/*----- PROTECTED REGION END -----*/	//	FourChannelAdapterClass::destructor
 
 	_instance = NULL;
@@ -169,7 +175,7 @@ CORBA::Any *StopMoveClass::execute(Tango::DeviceImpl *device, TANGO_UNUSED(const
 
 //--------------------------------------------------------
 /**
- * method : 		ResetMotorClass::execute()
+ * method : 		MoveToLefStepsClass::execute()
  * description : 	method to trigger the execution of the command.
  *
  * @param	device	The device on which the command must be executed
@@ -178,16 +184,18 @@ CORBA::Any *StopMoveClass::execute(Tango::DeviceImpl *device, TANGO_UNUSED(const
  *	returns The command output data (packed in the Any object)
  */
 //--------------------------------------------------------
-CORBA::Any *ResetMotorClass::execute(Tango::DeviceImpl *device, TANGO_UNUSED(const CORBA::Any &in_any))
+CORBA::Any *MoveToLefStepsClass::execute(Tango::DeviceImpl *device, const CORBA::Any &in_any)
 {
-	cout2 << "ResetMotorClass::execute(): arrived" << endl;
-	((static_cast<FourChannelAdapter *>(device))->reset_motor());
+	cout2 << "MoveToLefStepsClass::execute(): arrived" << endl;
+	Tango::DevLong argin;
+	extract(in_any, argin);
+	((static_cast<FourChannelAdapter *>(device))->move_to_lef_steps(argin));
 	return new CORBA::Any();
 }
 
 //--------------------------------------------------------
 /**
- * method : 		CalibrateClass::execute()
+ * method : 		MoveToRightStepsClass::execute()
  * description : 	method to trigger the execution of the command.
  *
  * @param	device	The device on which the command must be executed
@@ -196,10 +204,30 @@ CORBA::Any *ResetMotorClass::execute(Tango::DeviceImpl *device, TANGO_UNUSED(con
  *	returns The command output data (packed in the Any object)
  */
 //--------------------------------------------------------
-CORBA::Any *CalibrateClass::execute(Tango::DeviceImpl *device, TANGO_UNUSED(const CORBA::Any &in_any))
+CORBA::Any *MoveToRightStepsClass::execute(Tango::DeviceImpl *device, const CORBA::Any &in_any)
 {
-	cout2 << "CalibrateClass::execute(): arrived" << endl;
-	((static_cast<FourChannelAdapter *>(device))->calibrate());
+	cout2 << "MoveToRightStepsClass::execute(): arrived" << endl;
+	Tango::DevLong argin;
+	extract(in_any, argin);
+	((static_cast<FourChannelAdapter *>(device))->move_to_right_steps(argin));
+	return new CORBA::Any();
+}
+
+//--------------------------------------------------------
+/**
+ * method : 		SetCurrentPosAsZeroClass::execute()
+ * description : 	method to trigger the execution of the command.
+ *
+ * @param	device	The device on which the command must be executed
+ * @param	in_any	The command input data
+ *
+ *	returns The command output data (packed in the Any object)
+ */
+//--------------------------------------------------------
+CORBA::Any *SetCurrentPosAsZeroClass::execute(Tango::DeviceImpl *device, TANGO_UNUSED(const CORBA::Any &in_any))
+{
+	cout2 << "SetCurrentPosAsZeroClass::execute(): arrived" << endl;
+	((static_cast<FourChannelAdapter *>(device))->set_current_pos_as_zero());
 	return new CORBA::Any();
 }
 
@@ -267,6 +295,7 @@ void FourChannelAdapterClass::get_class_property()
 	/*----- PROTECTED REGION END -----*/	//	FourChannelAdapterClass::get_class_property_before
 	//	Read class properties from database.
 	cl_prop.push_back(Tango::DbDatum("DevicePath"));
+	cl_prop.push_back(Tango::DbDatum("ControllerNumber"));
 	
 	//	Call database and extract values
 	if (Tango::Util::instance()->_UseDb==true)
@@ -284,6 +313,18 @@ void FourChannelAdapterClass::get_class_property()
 		{
 			def_prop    >>  devicePath;
 			cl_prop[i]  <<  devicePath;
+		}
+	}
+	//	Try to extract ControllerNumber value
+	if (cl_prop[++i].is_empty()==false)	cl_prop[i]  >>  controllerNumber;
+	else
+	{
+		//	Check default value for ControllerNumber
+		def_prop = get_default_class_property(cl_prop[i].name);
+		if (def_prop.is_empty()==false)
+		{
+			def_prop    >>  controllerNumber;
+			cl_prop[i]  <<  controllerNumber;
 		}
 	}
 	/*----- PROTECTED REGION ID(FourChannelAdapterClass::get_class_property_after) ENABLED START -----*/
@@ -325,6 +366,20 @@ void FourChannelAdapterClass::set_default_property()
 	}
 	else
 		add_wiz_class_prop(prop_name, prop_desc);
+	prop_name = "ControllerNumber";
+	prop_desc = "Number of controller";
+	prop_def  = "0";
+	vect_data.clear();
+	vect_data.push_back("0");
+	if (prop_def.length()>0)
+	{
+		Tango::DbDatum	data(prop_name);
+		data << vect_data ;
+		cl_def_prop.push_back(data);
+		add_wiz_class_prop(prop_name, prop_desc,  prop_def);
+	}
+	else
+		add_wiz_class_prop(prop_name, prop_desc);
 
 	//	Set Default device Properties
 	prop_name = "Speed";
@@ -346,6 +401,32 @@ void FourChannelAdapterClass::set_default_property()
 	prop_def  = "0";
 	vect_data.clear();
 	vect_data.push_back("0");
+	if (prop_def.length()>0)
+	{
+		Tango::DbDatum	data(prop_name);
+		data << vect_data ;
+		dev_def_prop.push_back(data);
+		add_wiz_dev_prop(prop_name, prop_desc,  prop_def);
+	}
+	else
+		add_wiz_dev_prop(prop_name, prop_desc);
+	prop_name = "ZeroPosition";
+	prop_desc = "";
+	prop_def  = "";
+	vect_data.clear();
+	if (prop_def.length()>0)
+	{
+		Tango::DbDatum	data(prop_name);
+		data << vect_data ;
+		dev_def_prop.push_back(data);
+		add_wiz_dev_prop(prop_name, prop_desc,  prop_def);
+	}
+	else
+		add_wiz_dev_prop(prop_name, prop_desc);
+	prop_name = "Coeff";
+	prop_desc = "Coeff for convert encoder value to units";
+	prop_def  = "";
+	vect_data.clear();
 	if (prop_def.length()>0)
 	{
 		Tango::DbDatum	data(prop_name);
@@ -563,23 +644,32 @@ void FourChannelAdapterClass::command_factory()
 			Tango::OPERATOR);
 	command_list.push_back(pStopMoveCmd);
 
-	//	Command ResetMotor
-	ResetMotorClass	*pResetMotorCmd =
-		new ResetMotorClass("ResetMotor",
-			Tango::DEV_VOID, Tango::DEV_VOID,
+	//	Command MoveToLefSteps
+	MoveToLefStepsClass	*pMoveToLefStepsCmd =
+		new MoveToLefStepsClass("MoveToLefSteps",
+			Tango::DEV_LONG, Tango::DEV_VOID,
 			"",
 			"",
 			Tango::OPERATOR);
-	command_list.push_back(pResetMotorCmd);
+	command_list.push_back(pMoveToLefStepsCmd);
 
-	//	Command Calibrate
-	CalibrateClass	*pCalibrateCmd =
-		new CalibrateClass("Calibrate",
+	//	Command MoveToRightSteps
+	MoveToRightStepsClass	*pMoveToRightStepsCmd =
+		new MoveToRightStepsClass("MoveToRightSteps",
+			Tango::DEV_LONG, Tango::DEV_VOID,
+			"",
+			"",
+			Tango::OPERATOR);
+	command_list.push_back(pMoveToRightStepsCmd);
+
+	//	Command SetCurrentPosAsZero
+	SetCurrentPosAsZeroClass	*pSetCurrentPosAsZeroCmd =
+		new SetCurrentPosAsZeroClass("SetCurrentPosAsZero",
 			Tango::DEV_VOID, Tango::DEV_VOID,
 			"",
 			"",
 			Tango::OPERATOR);
-	command_list.push_back(pCalibrateCmd);
+	command_list.push_back(pSetCurrentPosAsZeroCmd);
 
 	/*----- PROTECTED REGION ID(FourChannelAdapterClass::command_factory_after) ENABLED START -----*/
 	

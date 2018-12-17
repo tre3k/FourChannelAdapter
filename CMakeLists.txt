@@ -17,11 +17,12 @@ find_library(ZMQ_LIB zmq)
 
 set(CMAKE_CXX_FLAGS -w)
 
-add_executable(FourChannelAdapter    main.cpp
+add_executable(FourChannelAdapter   main.cpp
                                     FourChannelAdapterStateMachine.cpp
                                     FourChannelAdapterClass.cpp FourChannelAdapterClass.h
                                     FourChannelAdapter.cpp FourChannelAdapter.h
-                                    ClassFactory.cpp)
+                                    ClassFactory.cpp
+                                    SerialPort.cpp SerialPort.h MotorClass.cpp MotorClass.h)
 
 target_link_libraries(FourChannelAdapter ${TANGO_LIB}
                                          ${OMNIDYNAMIC4_LIB}

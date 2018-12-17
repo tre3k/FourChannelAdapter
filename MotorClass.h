@@ -1,0 +1,146 @@
+//
+// Created by Kirill Pshenichnyi on 17.12.18.
+//
+
+#ifndef FOURCHANNELADAPTER_MOTORCLASS_H
+#define FOURCHANNELADAPTER_MOTORCLASS_H
+
+#define DEBUG_MESSAGE
+
+#include <termios.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/ioctl.h>
+#include <asm/ioctls.h>
+#include <unistd.h>
+#include <string.h>
+#include <stdint.h>
+
+#ifdef DEBUG_MESSAGE
+#include <stdio.h>
+#endif
+
+
+namespace Motor {
+
+    /* FLAGS */
+    const int F_MOTOR_POWER_ON                    = 0x20;
+    const int F_MOTOR_DIRECTION                   = 0x40;
+    const int F_MOTOR_ENABLE                      = 0x80;
+
+    const int F_SENSOR_MOTORCONTROL               = 0x20;
+    const int F_SENSOR_GRAYCODE                   = 0x40;
+    const int F_SENSOR_ENABLE                     = 0x80;
+
+    /* CMD */
+    const int CMD_SENSOR_READ                     = 0x01;
+    const int CMD_SENSOR_WCONFIG                  = 0x11;
+    const int CMD_SENSOR_RCONFIG                  = 0x21;
+    const int CMD_MOTOR_READ                      = 0x02;
+    const int CMD_MOTOR_WCONFIG                   = 0x12;
+    const int CMD_MOTOR_RCONFIG                   = 0x22;
+    const int CMD_MOTOR_WRITE                     = 0x82;
+
+    const int CMD_READALL                         = 0x00;
+    const int CMD_ECHO                            = 0x60;
+    const int CMD_ERROR                           = 0x70;
+
+
+    struct sReadAll{
+        struct{
+            uint32_t flags;
+            uint32_t sensor_value;
+            uint32_t sensor_stop_value;
+            uint32_t steps_left;
+        } channel[4];
+    };
+
+    /* for cmdSensorRead */
+    struct sSensor{
+        char channel;
+        char flags;
+        char nbytes_nbits;
+        char nshift;
+        uint32_t value;
+    };
+
+    /* cmdSensorWconfig, cmdSensorRconfig */
+    struct sSensorConfig{
+        char channel;
+        char flags;
+        char nbytes_nbits;
+        char nshift;
+        uint32_t mask;
+    };
+
+    /* for cmdMotorRead, cmdMotorWrite */
+    struct sMotorRW{
+        char channel;
+        char flags;
+        uint16_t freq_idx;
+        uint32_t stepl_left;
+    };
+
+    /* for cmdMotorWconfig, cmdMotorRconfig */
+    struct sMotorConfig{
+        char channel;
+        char flags;
+        char accel;
+        char stepping;
+        uint32_t max_idx;
+    };
+
+
+    struct sPacket{
+        uint16_t title;
+        char device_type;
+        char num_of_device;
+        char command;
+        char data[8];
+        char checksum;
+        uint16_t signature;
+    };
+
+
+    /* CLASS */
+    class MotorClass {
+    private:
+        int channel;
+        int device;
+        int fd;
+
+        struct sPacket rx_packet;
+        struct sPacket tx_packet;
+
+    private:
+        char getCheckSum(char *buff);
+        void setTitle(void);
+        int rawWriteRead(char *in_buff,char *out_buff,int write_size,int read_size);
+        int SendPacket();
+
+        void pushData(sPacket *pack,char * data);
+        void popData(sPacket *pack,char * data);
+        void sendPushPop(char * rxdata,char * txdata);
+        char setNbitsNbytes(int nbits, int nbytes);
+
+    public:
+        MotorClass(int fd_value);
+        void setChannel(int channel_value);
+        void setDevice(int device_value);
+
+        void cmdSensorRead(struct sSensor *ssensor);
+        void cmdSensorWconfig(struct sSensorConfig *ssensorconf);
+        void cmdSensorRconfig(struct sSensorConfig *ssensorconf);
+
+        void cmdMotorRead(sMotorRW *smotorrw);
+        void cmdMotorWrite(sMotorRW *smotorrw);
+        void cmdMotorRconfig(sMotorConfig *smotorconfig);
+        void cmdMotorWconfig(sMotorConfig *smotorconfig);
+        bool cmdEcho();
+
+
+    };
+}
+
+
+#endif //FOURCHANNELADAPTER_MOTORCLASS_H
