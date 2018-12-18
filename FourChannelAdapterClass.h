@@ -112,11 +112,11 @@ public:
 	{return (static_cast<FourChannelAdapter *>(dev))->is_StopMove_allowed(any);}
 };
 
-//	Command MoveToLefSteps class definition
-class MoveToLefStepsClass : public Tango::Command
+//	Command MoveToLeftSteps class definition
+class MoveToLeftStepsClass : public Tango::Command
 {
 public:
-	MoveToLefStepsClass(const char   *name,
+	MoveToLeftStepsClass(const char   *name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
@@ -124,15 +124,15 @@ public:
 				   Tango::DispLevel  level)
 	:Command(name,in,out,in_desc,out_desc, level)	{};
 
-	MoveToLefStepsClass(const char   *name,
+	MoveToLeftStepsClass(const char   *name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
 	:Command(name,in,out)	{};
-	~MoveToLefStepsClass() {};
+	~MoveToLeftStepsClass() {};
 	
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
-	{return (static_cast<FourChannelAdapter *>(dev))->is_MoveToLefSteps_allowed(any);}
+	{return (static_cast<FourChannelAdapter *>(dev))->is_MoveToLeftSteps_allowed(any);}
 };
 
 //	Command MoveToRightSteps class definition

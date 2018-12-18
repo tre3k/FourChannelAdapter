@@ -175,7 +175,7 @@ CORBA::Any *StopMoveClass::execute(Tango::DeviceImpl *device, TANGO_UNUSED(const
 
 //--------------------------------------------------------
 /**
- * method : 		MoveToLefStepsClass::execute()
+ * method : 		MoveToLeftStepsClass::execute()
  * description : 	method to trigger the execution of the command.
  *
  * @param	device	The device on which the command must be executed
@@ -184,12 +184,12 @@ CORBA::Any *StopMoveClass::execute(Tango::DeviceImpl *device, TANGO_UNUSED(const
  *	returns The command output data (packed in the Any object)
  */
 //--------------------------------------------------------
-CORBA::Any *MoveToLefStepsClass::execute(Tango::DeviceImpl *device, const CORBA::Any &in_any)
+CORBA::Any *MoveToLeftStepsClass::execute(Tango::DeviceImpl *device, const CORBA::Any &in_any)
 {
-	cout2 << "MoveToLefStepsClass::execute(): arrived" << endl;
+	cout2 << "MoveToLeftStepsClass::execute(): arrived" << endl;
 	Tango::DevLong argin;
 	extract(in_any, argin);
-	((static_cast<FourChannelAdapter *>(device))->move_to_lef_steps(argin));
+	((static_cast<FourChannelAdapter *>(device))->move_to_left_steps(argin));
 	return new CORBA::Any();
 }
 
@@ -675,14 +675,14 @@ void FourChannelAdapterClass::command_factory()
 			Tango::OPERATOR);
 	command_list.push_back(pStopMoveCmd);
 
-	//	Command MoveToLefSteps
-	MoveToLefStepsClass	*pMoveToLefStepsCmd =
-		new MoveToLefStepsClass("MoveToLefSteps",
+	//	Command MoveToLeftSteps
+	MoveToLeftStepsClass	*pMoveToLeftStepsCmd =
+		new MoveToLeftStepsClass("MoveToLeftSteps",
 			Tango::DEV_LONG, Tango::DEV_VOID,
 			"",
 			"",
 			Tango::OPERATOR);
-	command_list.push_back(pMoveToLefStepsCmd);
+	command_list.push_back(pMoveToLeftStepsCmd);
 
 	//	Command MoveToRightSteps
 	MoveToRightStepsClass	*pMoveToRightStepsCmd =

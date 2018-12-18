@@ -53,7 +53,7 @@
 //  State                |  Inherited (no method)
 //  Status               |  Inherited (no method)
 //  StopMove             |  stop_move
-//  MoveToLefSteps       |  move_to_lef_steps
+//  MoveToLeftSteps      |  move_to_left_steps
 //  MoveToRightSteps     |  move_to_right_steps
 //  SetCurrentPosAsZero  |  set_current_pos_as_zero
 //================================================================
@@ -80,32 +80,32 @@ namespace FourChannelAdapter_ns
  *                implementing the classFourChannelAdapter
  */
 //--------------------------------------------------------
-	FourChannelAdapter::FourChannelAdapter(Tango::DeviceClass *cl, string &s)
-			: TANGO_BASE_CLASS(cl, s.c_str())
-	{
-		/*----- PROTECTED REGION ID(FourChannelAdapter::constructor_1) ENABLED START -----*/
+FourChannelAdapter::FourChannelAdapter(Tango::DeviceClass *cl, string &s)
+ : TANGO_BASE_CLASS(cl, s.c_str())
+{
+	/*----- PROTECTED REGION ID(FourChannelAdapter::constructor_1) ENABLED START -----*/
 		init_device();
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::constructor_1
-	}
+}
 //--------------------------------------------------------
-	FourChannelAdapter::FourChannelAdapter(Tango::DeviceClass *cl, const char *s)
-			: TANGO_BASE_CLASS(cl, s)
-	{
-		/*----- PROTECTED REGION ID(FourChannelAdapter::constructor_2) ENABLED START -----*/
+FourChannelAdapter::FourChannelAdapter(Tango::DeviceClass *cl, const char *s)
+ : TANGO_BASE_CLASS(cl, s)
+{
+	/*----- PROTECTED REGION ID(FourChannelAdapter::constructor_2) ENABLED START -----*/
 		init_device();
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::constructor_2
-	}
+}
 //--------------------------------------------------------
-	FourChannelAdapter::FourChannelAdapter(Tango::DeviceClass *cl, const char *s, const char *d)
-			: TANGO_BASE_CLASS(cl, s, d)
-	{
-		/*----- PROTECTED REGION ID(FourChannelAdapter::constructor_3) ENABLED START -----*/
+FourChannelAdapter::FourChannelAdapter(Tango::DeviceClass *cl, const char *s, const char *d)
+ : TANGO_BASE_CLASS(cl, s, d)
+{
+	/*----- PROTECTED REGION ID(FourChannelAdapter::constructor_3) ENABLED START -----*/
 		init_device();
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::constructor_3
-	}
+}
 
 //--------------------------------------------------------
 /**
@@ -113,17 +113,17 @@ namespace FourChannelAdapter_ns
  *	Description : will be called at device destruction or at init command
  */
 //--------------------------------------------------------
-	void FourChannelAdapter::delete_device()
-	{
-		DEBUG_STREAM << "FourChannelAdapter::delete_device() " << device_name << endl;
-		/*----- PROTECTED REGION ID(FourChannelAdapter::delete_device) ENABLED START -----*/
+void FourChannelAdapter::delete_device()
+{
+	DEBUG_STREAM << "FourChannelAdapter::delete_device() " << device_name << endl;
+	/*----- PROTECTED REGION ID(FourChannelAdapter::delete_device) ENABLED START -----*/
 
 		//	Delete device allocated objects
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::delete_device
-		delete[] attr_Position_read;
-		delete[] attr_ZeroPosition_read;
-	}
+	delete[] attr_Position_read;
+	delete[] attr_ZeroPosition_read;
+}
 
 //--------------------------------------------------------
 /**
@@ -131,10 +131,10 @@ namespace FourChannelAdapter_ns
  *	Description : will be called at device initialization.
  */
 //--------------------------------------------------------
-	void FourChannelAdapter::init_device()
-	{
-		DEBUG_STREAM << "FourChannelAdapter::init_device() create device " << device_name << endl;
-		/*----- PROTECTED REGION ID(FourChannelAdapter::init_device_before) ENABLED START -----*/
+void FourChannelAdapter::init_device()
+{
+	DEBUG_STREAM << "FourChannelAdapter::init_device() create device " << device_name << endl;
+	/*----- PROTECTED REGION ID(FourChannelAdapter::init_device_before) ENABLED START -----*/
 
 		//	Initialization before get_device_property() call
 
@@ -148,14 +148,14 @@ namespace FourChannelAdapter_ns
 		}
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::init_device_before
+	
 
-
-		//	Get the device properties from database
-		get_device_property();
-
-		attr_Position_read = new Tango::DevDouble[1];
-		attr_ZeroPosition_read = new Tango::DevDouble[1];
-		/*----- PROTECTED REGION ID(FourChannelAdapter::init_device) ENABLED START -----*/
+	//	Get the device properties from database
+	get_device_property();
+	
+	attr_Position_read = new Tango::DevDouble[1];
+	attr_ZeroPosition_read = new Tango::DevDouble[1];
+	/*----- PROTECTED REGION ID(FourChannelAdapter::init_device) ENABLED START -----*/
 		//	Initialize device
 
 #ifdef DEBUG_MESSAGE
@@ -196,7 +196,7 @@ namespace FourChannelAdapter_ns
 		mc->cmdMotorWconfig(&srx_motor_config);
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::init_device
-	}
+}
 
 //--------------------------------------------------------
 /**
@@ -204,111 +204,111 @@ namespace FourChannelAdapter_ns
  *	Description : Read database to initialize property data members.
  */
 //--------------------------------------------------------
-	void FourChannelAdapter::get_device_property()
-	{
-		/*----- PROTECTED REGION ID(FourChannelAdapter::get_device_property_before) ENABLED START -----*/
+void FourChannelAdapter::get_device_property()
+{
+	/*----- PROTECTED REGION ID(FourChannelAdapter::get_device_property_before) ENABLED START -----*/
 
 		//	Initialize property data members
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::get_device_property_before
 
 
-		//	Read device properties from database.
-		Tango::DbData	dev_prop;
-		dev_prop.push_back(Tango::DbDatum("Speed"));
-		dev_prop.push_back(Tango::DbDatum("Channel"));
-		dev_prop.push_back(Tango::DbDatum("ZeroPosition"));
-		dev_prop.push_back(Tango::DbDatum("CoeffToUnit"));
-		dev_prop.push_back(Tango::DbDatum("Stepping"));
-		dev_prop.push_back(Tango::DbDatum("Accelerate"));
+	//	Read device properties from database.
+	Tango::DbData	dev_prop;
+	dev_prop.push_back(Tango::DbDatum("Speed"));
+	dev_prop.push_back(Tango::DbDatum("Channel"));
+	dev_prop.push_back(Tango::DbDatum("ZeroPosition"));
+	dev_prop.push_back(Tango::DbDatum("CoeffToUnit"));
+	dev_prop.push_back(Tango::DbDatum("Stepping"));
+	dev_prop.push_back(Tango::DbDatum("Accelerate"));
 
-		//	is there at least one property to be read ?
-		if (dev_prop.size()>0)
-		{
-			//	Call database and extract values
-			if (Tango::Util::instance()->_UseDb==true)
-				get_db_device()->get_property(dev_prop);
+	//	is there at least one property to be read ?
+	if (dev_prop.size()>0)
+	{
+		//	Call database and extract values
+		if (Tango::Util::instance()->_UseDb==true)
+			get_db_device()->get_property(dev_prop);
+	
+		//	get instance on FourChannelAdapterClass to get class property
+		Tango::DbDatum	def_prop, cl_prop;
+		FourChannelAdapterClass	*ds_class =
+			(static_cast<FourChannelAdapterClass *>(get_device_class()));
+		int	i = -1;
 
-			//	get instance on FourChannelAdapterClass to get class property
-			Tango::DbDatum	def_prop, cl_prop;
-			FourChannelAdapterClass	*ds_class =
-					(static_cast<FourChannelAdapterClass *>(get_device_class()));
-			int	i = -1;
-
-			//	Try to initialize Speed from class property
-			cl_prop = ds_class->get_class_property(dev_prop[++i].name);
-			if (cl_prop.is_empty()==false)	cl_prop  >>  speed;
-			else {
-				//	Try to initialize Speed from default device value
-				def_prop = ds_class->get_default_device_property(dev_prop[i].name);
-				if (def_prop.is_empty()==false)	def_prop  >>  speed;
-			}
-			//	And try to extract Speed value from database
-			if (dev_prop[i].is_empty()==false)	dev_prop[i]  >>  speed;
-
-			//	Try to initialize Channel from class property
-			cl_prop = ds_class->get_class_property(dev_prop[++i].name);
-			if (cl_prop.is_empty()==false)	cl_prop  >>  channel;
-			else {
-				//	Try to initialize Channel from default device value
-				def_prop = ds_class->get_default_device_property(dev_prop[i].name);
-				if (def_prop.is_empty()==false)	def_prop  >>  channel;
-			}
-			//	And try to extract Channel value from database
-			if (dev_prop[i].is_empty()==false)	dev_prop[i]  >>  channel;
-
-			//	Try to initialize ZeroPosition from class property
-			cl_prop = ds_class->get_class_property(dev_prop[++i].name);
-			if (cl_prop.is_empty()==false)	cl_prop  >>  zeroPosition;
-			else {
-				//	Try to initialize ZeroPosition from default device value
-				def_prop = ds_class->get_default_device_property(dev_prop[i].name);
-				if (def_prop.is_empty()==false)	def_prop  >>  zeroPosition;
-			}
-			//	And try to extract ZeroPosition value from database
-			if (dev_prop[i].is_empty()==false)	dev_prop[i]  >>  zeroPosition;
-
-			//	Try to initialize CoeffToUnit from class property
-			cl_prop = ds_class->get_class_property(dev_prop[++i].name);
-			if (cl_prop.is_empty()==false)	cl_prop  >>  coeffToUnit;
-			else {
-				//	Try to initialize CoeffToUnit from default device value
-				def_prop = ds_class->get_default_device_property(dev_prop[i].name);
-				if (def_prop.is_empty()==false)	def_prop  >>  coeffToUnit;
-			}
-			//	And try to extract CoeffToUnit value from database
-			if (dev_prop[i].is_empty()==false)	dev_prop[i]  >>  coeffToUnit;
-
-			//	Try to initialize Stepping from class property
-			cl_prop = ds_class->get_class_property(dev_prop[++i].name);
-			if (cl_prop.is_empty()==false)	cl_prop  >>  stepping;
-			else {
-				//	Try to initialize Stepping from default device value
-				def_prop = ds_class->get_default_device_property(dev_prop[i].name);
-				if (def_prop.is_empty()==false)	def_prop  >>  stepping;
-			}
-			//	And try to extract Stepping value from database
-			if (dev_prop[i].is_empty()==false)	dev_prop[i]  >>  stepping;
-
-			//	Try to initialize Accelerate from class property
-			cl_prop = ds_class->get_class_property(dev_prop[++i].name);
-			if (cl_prop.is_empty()==false)	cl_prop  >>  accelerate;
-			else {
-				//	Try to initialize Accelerate from default device value
-				def_prop = ds_class->get_default_device_property(dev_prop[i].name);
-				if (def_prop.is_empty()==false)	def_prop  >>  accelerate;
-			}
-			//	And try to extract Accelerate value from database
-			if (dev_prop[i].is_empty()==false)	dev_prop[i]  >>  accelerate;
-
+		//	Try to initialize Speed from class property
+		cl_prop = ds_class->get_class_property(dev_prop[++i].name);
+		if (cl_prop.is_empty()==false)	cl_prop  >>  speed;
+		else {
+			//	Try to initialize Speed from default device value
+			def_prop = ds_class->get_default_device_property(dev_prop[i].name);
+			if (def_prop.is_empty()==false)	def_prop  >>  speed;
 		}
+		//	And try to extract Speed value from database
+		if (dev_prop[i].is_empty()==false)	dev_prop[i]  >>  speed;
 
-		/*----- PROTECTED REGION ID(FourChannelAdapter::get_device_property_after) ENABLED START -----*/
+		//	Try to initialize Channel from class property
+		cl_prop = ds_class->get_class_property(dev_prop[++i].name);
+		if (cl_prop.is_empty()==false)	cl_prop  >>  channel;
+		else {
+			//	Try to initialize Channel from default device value
+			def_prop = ds_class->get_default_device_property(dev_prop[i].name);
+			if (def_prop.is_empty()==false)	def_prop  >>  channel;
+		}
+		//	And try to extract Channel value from database
+		if (dev_prop[i].is_empty()==false)	dev_prop[i]  >>  channel;
+
+		//	Try to initialize ZeroPosition from class property
+		cl_prop = ds_class->get_class_property(dev_prop[++i].name);
+		if (cl_prop.is_empty()==false)	cl_prop  >>  zeroPosition;
+		else {
+			//	Try to initialize ZeroPosition from default device value
+			def_prop = ds_class->get_default_device_property(dev_prop[i].name);
+			if (def_prop.is_empty()==false)	def_prop  >>  zeroPosition;
+		}
+		//	And try to extract ZeroPosition value from database
+		if (dev_prop[i].is_empty()==false)	dev_prop[i]  >>  zeroPosition;
+
+		//	Try to initialize CoeffToUnit from class property
+		cl_prop = ds_class->get_class_property(dev_prop[++i].name);
+		if (cl_prop.is_empty()==false)	cl_prop  >>  coeffToUnit;
+		else {
+			//	Try to initialize CoeffToUnit from default device value
+			def_prop = ds_class->get_default_device_property(dev_prop[i].name);
+			if (def_prop.is_empty()==false)	def_prop  >>  coeffToUnit;
+		}
+		//	And try to extract CoeffToUnit value from database
+		if (dev_prop[i].is_empty()==false)	dev_prop[i]  >>  coeffToUnit;
+
+		//	Try to initialize Stepping from class property
+		cl_prop = ds_class->get_class_property(dev_prop[++i].name);
+		if (cl_prop.is_empty()==false)	cl_prop  >>  stepping;
+		else {
+			//	Try to initialize Stepping from default device value
+			def_prop = ds_class->get_default_device_property(dev_prop[i].name);
+			if (def_prop.is_empty()==false)	def_prop  >>  stepping;
+		}
+		//	And try to extract Stepping value from database
+		if (dev_prop[i].is_empty()==false)	dev_prop[i]  >>  stepping;
+
+		//	Try to initialize Accelerate from class property
+		cl_prop = ds_class->get_class_property(dev_prop[++i].name);
+		if (cl_prop.is_empty()==false)	cl_prop  >>  accelerate;
+		else {
+			//	Try to initialize Accelerate from default device value
+			def_prop = ds_class->get_default_device_property(dev_prop[i].name);
+			if (def_prop.is_empty()==false)	def_prop  >>  accelerate;
+		}
+		//	And try to extract Accelerate value from database
+		if (dev_prop[i].is_empty()==false)	dev_prop[i]  >>  accelerate;
+
+	}
+
+	/*----- PROTECTED REGION ID(FourChannelAdapter::get_device_property_after) ENABLED START -----*/
 
 		//	Check device property data members init
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::get_device_property_after
-	}
+}
 
 //--------------------------------------------------------
 /**
@@ -316,15 +316,15 @@ namespace FourChannelAdapter_ns
  *	Description : method always executed before any command is executed
  */
 //--------------------------------------------------------
-	void FourChannelAdapter::always_executed_hook()
-	{
-		DEBUG_STREAM << "FourChannelAdapter::always_executed_hook()  " << device_name << endl;
-		/*----- PROTECTED REGION ID(FourChannelAdapter::always_executed_hook) ENABLED START -----*/
+void FourChannelAdapter::always_executed_hook()
+{
+	DEBUG_STREAM << "FourChannelAdapter::always_executed_hook()  " << device_name << endl;
+	/*----- PROTECTED REGION ID(FourChannelAdapter::always_executed_hook) ENABLED START -----*/
 
 		//	code always executed before all requests
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::always_executed_hook
-	}
+}
 
 //--------------------------------------------------------
 /**
@@ -332,30 +332,30 @@ namespace FourChannelAdapter_ns
  *	Description : Hardware acquisition for attributes
  */
 //--------------------------------------------------------
-	void FourChannelAdapter::read_attr_hardware(TANGO_UNUSED(vector<long> &attr_list))
-	{
-		DEBUG_STREAM << "FourChannelAdapter::read_attr_hardware(vector<long> &attr_list) entering... " << endl;
-		/*----- PROTECTED REGION ID(FourChannelAdapter::read_attr_hardware) ENABLED START -----*/
+void FourChannelAdapter::read_attr_hardware(TANGO_UNUSED(vector<long> &attr_list))
+{
+	DEBUG_STREAM << "FourChannelAdapter::read_attr_hardware(vector<long> &attr_list) entering... " << endl;
+	/*----- PROTECTED REGION ID(FourChannelAdapter::read_attr_hardware) ENABLED START -----*/
 
 		//	Add your own code
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::read_attr_hardware
-	}
+}
 //--------------------------------------------------------
 /**
  *	Method      : FourChannelAdapter::write_attr_hardware()
  *	Description : Hardware writing for attributes
  */
 //--------------------------------------------------------
-	void FourChannelAdapter::write_attr_hardware(TANGO_UNUSED(vector<long> &attr_list))
-	{
-		DEBUG_STREAM << "FourChannelAdapter::write_attr_hardware(vector<long> &attr_list) entering... " << endl;
-		/*----- PROTECTED REGION ID(FourChannelAdapter::write_attr_hardware) ENABLED START -----*/
+void FourChannelAdapter::write_attr_hardware(TANGO_UNUSED(vector<long> &attr_list))
+{
+	DEBUG_STREAM << "FourChannelAdapter::write_attr_hardware(vector<long> &attr_list) entering... " << endl;
+	/*----- PROTECTED REGION ID(FourChannelAdapter::write_attr_hardware) ENABLED START -----*/
 
 		//	Add your own code
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::write_attr_hardware
-	}
+}
 
 //--------------------------------------------------------
 /**
@@ -366,10 +366,10 @@ namespace FourChannelAdapter_ns
  *	Attr type:	Scalar
  */
 //--------------------------------------------------------
-	void FourChannelAdapter::read_Position(Tango::Attribute &attr)
-	{
-		DEBUG_STREAM << "FourChannelAdapter::read_Position(Tango::Attribute &attr) entering... " << endl;
-		/*----- PROTECTED REGION ID(FourChannelAdapter::read_Position) ENABLED START -----*/
+void FourChannelAdapter::read_Position(Tango::Attribute &attr)
+{
+	DEBUG_STREAM << "FourChannelAdapter::read_Position(Tango::Attribute &attr) entering... " << endl;
+	/*----- PROTECTED REGION ID(FourChannelAdapter::read_Position) ENABLED START -----*/
 
 		/* NEED READ FROM ENCODER */
 
@@ -386,7 +386,7 @@ namespace FourChannelAdapter_ns
 		attr.set_value(attr_Position_read);
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::read_Position
-	}
+}
 //--------------------------------------------------------
 /**
  *	Write attribute Position related method
@@ -396,13 +396,13 @@ namespace FourChannelAdapter_ns
  *	Attr type:	Scalar
  */
 //--------------------------------------------------------
-	void FourChannelAdapter::write_Position(Tango::WAttribute &attr)
-	{
-		DEBUG_STREAM << "FourChannelAdapter::write_Position(Tango::WAttribute &attr) entering... " << endl;
-		//	Retrieve write value
-		Tango::DevDouble	w_val;
-		attr.get_write_value(w_val);
-		/*----- PROTECTED REGION ID(FourChannelAdapter::write_Position) ENABLED START -----*/
+void FourChannelAdapter::write_Position(Tango::WAttribute &attr)
+{
+	DEBUG_STREAM << "FourChannelAdapter::write_Position(Tango::WAttribute &attr) entering... " << endl;
+	//	Retrieve write value
+	Tango::DevDouble	w_val;
+	attr.get_write_value(w_val);
+	/*----- PROTECTED REGION ID(FourChannelAdapter::write_Position) ENABLED START -----*/
 
 		setCurrentPosition = w_val;
 		int encoder_value = (int) (setCurrentPosition+zeroPosition)/coeffToUnit;
@@ -414,7 +414,7 @@ namespace FourChannelAdapter_ns
 		/* NEED MOVE DRIVER TO CURRPOSTION */
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::write_Position
-	}
+}
 //--------------------------------------------------------
 /**
  *	Read attribute ZeroPosition related method
@@ -424,10 +424,10 @@ namespace FourChannelAdapter_ns
  *	Attr type:	Scalar
  */
 //--------------------------------------------------------
-	void FourChannelAdapter::read_ZeroPosition(Tango::Attribute &attr)
-	{
-		DEBUG_STREAM << "FourChannelAdapter::read_ZeroPosition(Tango::Attribute &attr) entering... " << endl;
-		/*----- PROTECTED REGION ID(FourChannelAdapter::read_ZeroPosition) ENABLED START -----*/
+void FourChannelAdapter::read_ZeroPosition(Tango::Attribute &attr)
+{
+	DEBUG_STREAM << "FourChannelAdapter::read_ZeroPosition(Tango::Attribute &attr) entering... " << endl;
+	/*----- PROTECTED REGION ID(FourChannelAdapter::read_ZeroPosition) ENABLED START -----*/
 
 		*attr_ZeroPosition_read = zeroPosition;
 
@@ -435,7 +435,7 @@ namespace FourChannelAdapter_ns
 		attr.set_value(attr_ZeroPosition_read);
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::read_ZeroPosition
-	}
+}
 //--------------------------------------------------------
 /**
  *	Write attribute ZeroPosition related method
@@ -445,18 +445,18 @@ namespace FourChannelAdapter_ns
  *	Attr type:	Scalar
  */
 //--------------------------------------------------------
-	void FourChannelAdapter::write_ZeroPosition(Tango::WAttribute &attr)
-	{
-		DEBUG_STREAM << "FourChannelAdapter::write_ZeroPosition(Tango::WAttribute &attr) entering... " << endl;
-		//	Retrieve write value
-		Tango::DevDouble	w_val;
-		attr.get_write_value(w_val);
-		/*----- PROTECTED REGION ID(FourChannelAdapter::write_ZeroPosition) ENABLED START -----*/
+void FourChannelAdapter::write_ZeroPosition(Tango::WAttribute &attr)
+{
+	DEBUG_STREAM << "FourChannelAdapter::write_ZeroPosition(Tango::WAttribute &attr) entering... " << endl;
+	//	Retrieve write value
+	Tango::DevDouble	w_val;
+	attr.get_write_value(w_val);
+	/*----- PROTECTED REGION ID(FourChannelAdapter::write_ZeroPosition) ENABLED START -----*/
 
 		zeroPosition = w_val;
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::write_ZeroPosition
-	}
+}
 
 //--------------------------------------------------------
 /**
@@ -465,14 +465,14 @@ namespace FourChannelAdapter_ns
  *                for specified device.
  */
 //--------------------------------------------------------
-	void FourChannelAdapter::add_dynamic_attributes()
-	{
-		/*----- PROTECTED REGION ID(FourChannelAdapter::add_dynamic_attributes) ENABLED START -----*/
+void FourChannelAdapter::add_dynamic_attributes()
+{
+	/*----- PROTECTED REGION ID(FourChannelAdapter::add_dynamic_attributes) ENABLED START -----*/
 
 		//	Add your own code to create and add dynamic attributes if any
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::add_dynamic_attributes
-	}
+}
 
 //--------------------------------------------------------
 /**
@@ -481,10 +481,10 @@ namespace FourChannelAdapter_ns
  *
  */
 //--------------------------------------------------------
-	void FourChannelAdapter::stop_move()
-	{
-		DEBUG_STREAM << "FourChannelAdapter::StopMove()  - " << device_name << endl;
-		/*----- PROTECTED REGION ID(FourChannelAdapter::stop_move) ENABLED START -----*/
+void FourChannelAdapter::stop_move()
+{
+	DEBUG_STREAM << "FourChannelAdapter::StopMove()  - " << device_name << endl;
+	/*----- PROTECTED REGION ID(FourChannelAdapter::stop_move) ENABLED START -----*/
 
 #ifdef DEBUG_MESSAGE
 		printf("STOP MOTION!\n");
@@ -499,19 +499,19 @@ namespace FourChannelAdapter_ns
 		device_state = Tango::OFF;
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::stop_move
-	}
+}
 //--------------------------------------------------------
 /**
- *	Command MoveToLefSteps related method
+ *	Command MoveToLeftSteps related method
  *	Description: 
  *
  *	@param argin 
  */
 //--------------------------------------------------------
-	void FourChannelAdapter::move_to_lef_steps(Tango::DevLong argin)
-	{
-		DEBUG_STREAM << "FourChannelAdapter::MoveToLefSteps()  - " << device_name << endl;
-		/*----- PROTECTED REGION ID(FourChannelAdapter::move_to_lef_steps) ENABLED START -----*/
+void FourChannelAdapter::move_to_left_steps(Tango::DevLong argin)
+{
+	DEBUG_STREAM << "FourChannelAdapter::MoveToLeftSteps()  - " << device_name << endl;
+	/*----- PROTECTED REGION ID(FourChannelAdapter::move_to_left_steps) ENABLED START -----*/
 
 		Motor::sMotorRW s_motor,srx_motor;
 		s_motor.channel = (char) (channel & 0xff);
@@ -520,8 +520,8 @@ namespace FourChannelAdapter_ns
 		srx_motor = s_motor;
 		mc->cmdMotorWrite(&srx_motor);
 
-		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::move_to_lef_steps
-	}
+	/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::move_to_left_steps
+}
 //--------------------------------------------------------
 /**
  *	Command MoveToRightSteps related method
@@ -530,10 +530,10 @@ namespace FourChannelAdapter_ns
  *	@param argin 
  */
 //--------------------------------------------------------
-	void FourChannelAdapter::move_to_right_steps(Tango::DevLong argin)
-	{
-		DEBUG_STREAM << "FourChannelAdapter::MoveToRightSteps()  - " << device_name << endl;
-		/*----- PROTECTED REGION ID(FourChannelAdapter::move_to_right_steps) ENABLED START -----*/
+void FourChannelAdapter::move_to_right_steps(Tango::DevLong argin)
+{
+	DEBUG_STREAM << "FourChannelAdapter::MoveToRightSteps()  - " << device_name << endl;
+	/*----- PROTECTED REGION ID(FourChannelAdapter::move_to_right_steps) ENABLED START -----*/
 
 		Motor::sMotorRW s_motor,srx_motor;
 		s_motor.channel = (char) (channel & 0xff);
@@ -543,7 +543,7 @@ namespace FourChannelAdapter_ns
 		mc->cmdMotorWrite(&srx_motor);
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::move_to_right_steps
-	}
+}
 //--------------------------------------------------------
 /**
  *	Command SetCurrentPosAsZero related method
@@ -551,15 +551,15 @@ namespace FourChannelAdapter_ns
  *
  */
 //--------------------------------------------------------
-	void FourChannelAdapter::set_current_pos_as_zero()
-	{
-		DEBUG_STREAM << "FourChannelAdapter::SetCurrentPosAsZero()  - " << device_name << endl;
-		/*----- PROTECTED REGION ID(FourChannelAdapter::set_current_pos_as_zero) ENABLED START -----*/
+void FourChannelAdapter::set_current_pos_as_zero()
+{
+	DEBUG_STREAM << "FourChannelAdapter::SetCurrentPosAsZero()  - " << device_name << endl;
+	/*----- PROTECTED REGION ID(FourChannelAdapter::set_current_pos_as_zero) ENABLED START -----*/
 
 		zeroPosition = currentPosition+zeroPosition;
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::set_current_pos_as_zero
-	}
+}
 //--------------------------------------------------------
 /**
  *	Method      : FourChannelAdapter::add_dynamic_commands()
@@ -567,14 +567,14 @@ namespace FourChannelAdapter_ns
  *                for specified device.
  */
 //--------------------------------------------------------
-	void FourChannelAdapter::add_dynamic_commands()
-	{
-		/*----- PROTECTED REGION ID(FourChannelAdapter::add_dynamic_commands) ENABLED START -----*/
+void FourChannelAdapter::add_dynamic_commands()
+{
+	/*----- PROTECTED REGION ID(FourChannelAdapter::add_dynamic_commands) ENABLED START -----*/
 
 		//	Add your own code to create and add dynamic commands if any
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::add_dynamic_commands
-	}
+}
 
 /*----- PROTECTED REGION ID(FourChannelAdapter::namespace_ending) ENABLED START -----*/
 

@@ -199,13 +199,13 @@ public:
 	virtual void stop_move();
 	virtual bool is_StopMove_allowed(const CORBA::Any &any);
 	/**
-	 *	Command MoveToLefSteps related method
+	 *	Command MoveToLeftSteps related method
 	 *	Description: 
 	 *
 	 *	@param argin 
 	 */
-	virtual void move_to_lef_steps(Tango::DevLong argin);
-	virtual bool is_MoveToLefSteps_allowed(const CORBA::Any &any);
+	virtual void move_to_left_steps(Tango::DevLong argin);
+	virtual bool is_MoveToLeftSteps_allowed(const CORBA::Any &any);
 	/**
 	 *	Command MoveToRightSteps related method
 	 *	Description: 

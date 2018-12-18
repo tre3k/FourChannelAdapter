@@ -110,16 +110,16 @@ bool FourChannelAdapter::is_StopMove_allowed(TANGO_UNUSED(const CORBA::Any &any)
 
 //--------------------------------------------------------
 /**
- *	Method      : FourChannelAdapter::is_MoveToLefSteps_allowed()
- *	Description : Execution allowed for MoveToLefSteps attribute
+ *	Method      : FourChannelAdapter::is_MoveToLeftSteps_allowed()
+ *	Description : Execution allowed for MoveToLeftSteps attribute
  */
 //--------------------------------------------------------
-bool FourChannelAdapter::is_MoveToLefSteps_allowed(TANGO_UNUSED(const CORBA::Any &any))
+bool FourChannelAdapter::is_MoveToLeftSteps_allowed(TANGO_UNUSED(const CORBA::Any &any))
 {
-	//	Not any excluded states for MoveToLefSteps command.
-	/*----- PROTECTED REGION ID(FourChannelAdapter::MoveToLefStepsStateAllowed) ENABLED START -----*/
+	//	Not any excluded states for MoveToLeftSteps command.
+	/*----- PROTECTED REGION ID(FourChannelAdapter::MoveToLeftStepsStateAllowed) ENABLED START -----*/
 	
-	/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::MoveToLefStepsStateAllowed
+	/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::MoveToLeftStepsStateAllowed
 	return true;
 }
 

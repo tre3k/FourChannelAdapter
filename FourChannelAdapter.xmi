@@ -72,7 +72,7 @@
       </argout>
       <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
     </commands>
-    <commands name="MoveToLefSteps" description="" execMethod="move_to_lef_steps" displayLevel="OPERATOR" polledPeriod="0" isDynamic="false">
+    <commands name="MoveToLeftSteps" description="" execMethod="move_to_left_steps" displayLevel="OPERATOR" polledPeriod="0" isDynamic="false">
       <argin description="">
         <type xsi:type="pogoDsl:IntType"/>
       </argin>
