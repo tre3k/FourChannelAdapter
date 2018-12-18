@@ -412,8 +412,9 @@ void FourChannelAdapterClass::set_default_property()
 		add_wiz_dev_prop(prop_name, prop_desc);
 	prop_name = "ZeroPosition";
 	prop_desc = "";
-	prop_def  = "";
+	prop_def  = "0.0";
 	vect_data.clear();
+	vect_data.push_back("0.0");
 	if (prop_def.length()>0)
 	{
 		Tango::DbDatum	data(prop_name);
@@ -423,10 +424,39 @@ void FourChannelAdapterClass::set_default_property()
 	}
 	else
 		add_wiz_dev_prop(prop_name, prop_desc);
-	prop_name = "Coeff";
+	prop_name = "CoeffToUnit";
 	prop_desc = "Coeff for convert encoder value to units";
-	prop_def  = "";
+	prop_def  = "1.0";
 	vect_data.clear();
+	vect_data.push_back("1.0");
+	if (prop_def.length()>0)
+	{
+		Tango::DbDatum	data(prop_name);
+		data << vect_data ;
+		dev_def_prop.push_back(data);
+		add_wiz_dev_prop(prop_name, prop_desc,  prop_def);
+	}
+	else
+		add_wiz_dev_prop(prop_name, prop_desc);
+	prop_name = "Stepping";
+	prop_desc = "";
+	prop_def  = "1";
+	vect_data.clear();
+	vect_data.push_back("1");
+	if (prop_def.length()>0)
+	{
+		Tango::DbDatum	data(prop_name);
+		data << vect_data ;
+		dev_def_prop.push_back(data);
+		add_wiz_dev_prop(prop_name, prop_desc,  prop_def);
+	}
+	else
+		add_wiz_dev_prop(prop_name, prop_desc);
+	prop_name = "Accelerate";
+	prop_desc = "8";
+	prop_def  = "8";
+	vect_data.clear();
+	vect_data.push_back("8");
 	if (prop_def.length()>0)
 	{
 		Tango::DbDatum	data(prop_name);
@@ -587,7 +617,8 @@ void FourChannelAdapterClass::attribute_factory(vector<Tango::Attr *> &att_list)
 	zeroposition->set_default_properties(zeroposition_prop);
 	//	Not Polled
 	zeroposition->set_disp_level(Tango::OPERATOR);
-	//	Not Memorized
+	zeroposition->set_memorized();
+	zeroposition->set_memorized_init(false);
 	att_list.push_back(zeroposition);
 
 

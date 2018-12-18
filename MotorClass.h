@@ -22,7 +22,6 @@
 
 
 namespace Motor {
-
     /* FLAGS */
     const int F_MOTOR_POWER_ON                    = 0x20;
     const int F_MOTOR_DIRECTION                   = 0x40;
@@ -40,10 +39,18 @@ namespace Motor {
     const int CMD_MOTOR_WCONFIG                   = 0x12;
     const int CMD_MOTOR_RCONFIG                   = 0x22;
     const int CMD_MOTOR_WRITE                     = 0x82;
-
+    const int CMD_TASK_READ                       = 0x04;
+    const int CMD_TASK_WCONFIG                    = 0x14;
+    const int CMD_TASK_RCONFIG                    = 0x24;
+    const int CMD_TASK_WRITE                      = 0x84;
     const int CMD_READALL                         = 0x00;
     const int CMD_ECHO                            = 0x60;
+    const int CMD_GET_PARAM                       = 0x40;
+    const int CMD_SET_PARAM                       = 0x43;
+    const int CMD_SAVE_PARAMS                     = 0x44;
+    const int CMD_RESTORE_PARAMS                  = 0x45;
     const int CMD_ERROR                           = 0x70;
+
 
 
     struct sReadAll{
@@ -90,6 +97,11 @@ namespace Motor {
         uint32_t max_idx;
     };
 
+    /* for task config */
+    struct sTaskConfig{
+        char channel;
+        
+    };
 
     struct sPacket{
         uint16_t title;
@@ -121,12 +133,15 @@ namespace Motor {
         void pushData(sPacket *pack,char * data);
         void popData(sPacket *pack,char * data);
         void sendPushPop(char * rxdata,char * txdata);
-        char setNbitsNbytes(int nbits, int nbytes);
 
     public:
         MotorClass(int fd_value);
         void setChannel(int channel_value);
         void setDevice(int device_value);
+
+        char setNbitsNbytes(int nbits, int nbytes);
+
+        int convertFromGrayCode(int value);
 
         void cmdSensorRead(struct sSensor *ssensor);
         void cmdSensorWconfig(struct sSensorConfig *ssensorconf);

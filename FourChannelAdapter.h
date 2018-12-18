@@ -38,6 +38,7 @@
 #include "SerialPort.h"
 #include "MotorClass.h"
 
+#define DEBUG_MESSAGE
 
 /*----- PROTECTED REGION END -----*/	//	FourChannelAdapter.h
 
@@ -73,11 +74,15 @@ public:
 	//	Speed:	Speed int Hz
 	Tango::DevULong	speed;
 	//	Channel:	channel of the motor
-	Tango::DevShort	channel;
+	Tango::DevUShort	channel;
 	//	ZeroPosition:	
 	Tango::DevDouble	zeroPosition;
-	//	Coeff:	Coeff for convert encoder value to units
-	Tango::DevDouble	coeff;
+	//	CoeffToUnit:	Coeff for convert encoder value to units
+	Tango::DevDouble	coeffToUnit;
+	//	Stepping:	
+	Tango::DevUShort	stepping;
+	//	Accelerate:	8
+	Tango::DevUShort	accelerate;
 
 //	Attribute data members
 public:

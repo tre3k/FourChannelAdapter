@@ -56,11 +56,10 @@ int MotorClass::rawWriteRead(char *in_buff, char *out_buff, int write_size, int 
 }
 
 void MotorClass::setTitle() {
-    Motor::sPacket *pack = &tx_packet;
-    pack->title = 0x5aa5;
-    pack->num_of_device = (char) (device & 0xff);
-    pack->device_type = 253;
-    pack->signature = 0x9bb9;
+    tx_packet.title = 0x5aa5;
+    tx_packet.num_of_device = (char) (device & 0xff);
+    tx_packet.device_type = 253;
+    tx_packet.signature = 0x9bb9;
     return;
 }
 
@@ -71,11 +70,9 @@ char MotorClass::getCheckSum(char *buff){
 }
 
 int MotorClass::SendPacket() {
-    sPacket *txpack = &tx_packet;
-    sPacket *rxpack = &rx_packet;
-    txpack->checksum = getCheckSum((char *) &tx_packet);
-    rawWriteRead((char *) txpack, (char *) rxpack,
-                 sizeof(*txpack), sizeof(*rxpack));
+    tx_packet.checksum = getCheckSum((char *) &tx_packet);
+    rawWriteRead((char *) &tx_packet, (char *) &rx_packet,
+                 sizeof(tx_packet), sizeof(rx_packet));
     return 0;
 }
 
@@ -88,11 +85,9 @@ void MotorClass::popData(Motor::sPacket *pack, char *data) {
 }
 
 void MotorClass::sendPushPop(char *rxdata, char *txdata) {
-    sPacket *txpack = &tx_packet;
-    sPacket *rxpack = &rx_packet;
-    pushData(txpack,(char *)txdata);
+    pushData(&tx_packet,(char *)txdata);
     SendPacket();
-    popData(rxpack,(char *)rxdata);
+    popData(&rx_packet,(char *)rxdata);
 }
 
 char MotorClass::setNbitsNbytes(int nbits, int nbytes) {
@@ -156,4 +151,13 @@ bool MotorClass::cmdEcho() {
 
     for(int i=0;i<16;i++) if(tx[i]!=rx[i]) return false;
     return true;
+}
+
+int MotorClass::convertFromGrayCode(int value) {
+    int retval = 0;
+    for (retval=0;value;){
+        retval^=value;
+        value=value>>1;
+    }
+    return retval;
 }
