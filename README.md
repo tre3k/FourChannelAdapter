@@ -39,6 +39,6 @@ Current position in the abstract units (depends on CoeffToUnit)
 2. cd FourChannelAdapter
 3. mkdir build && cd build
 4. cmake ../ && make
-5. TANGO_HOST=tango-host:port ./FourChannelAdapter <instance name>
+5. TANGO_HOST=tango-host:port ./FourChannelAdapter \<instance name\>
   
 ## Regestration in jive:
