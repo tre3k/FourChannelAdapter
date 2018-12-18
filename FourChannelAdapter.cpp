@@ -556,7 +556,7 @@ namespace FourChannelAdapter_ns
 		DEBUG_STREAM << "FourChannelAdapter::SetCurrentPosAsZero()  - " << device_name << endl;
 		/*----- PROTECTED REGION ID(FourChannelAdapter::set_current_pos_as_zero) ENABLED START -----*/
 
-		zeroPosition = currentPosition;
+		zeroPosition = currentPosition+zeroPosition;
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::set_current_pos_as_zero
 	}
