@@ -376,9 +376,10 @@ void FourChannelAdapter::read_Position(Tango::Attribute &attr)
 		Motor::sSensor s_sensor,srx_sensor;
 		s_sensor.channel = (char) (channel & 0xff);
 		srx_sensor = s_sensor;
+		//srx_sensor.flags; ENDS?
 		mc->cmdSensorRead(&srx_sensor);
 
-		currentPosition = coeffToUnit*mc->convertFromGrayCode(srx_sensor.value) - zeroPosition;
+		currentPosition = mc->convertFromGrayCode(srx_sensor.value)/coeffToUnit - zeroPosition;
 
 		*attr_Position_read = currentPosition;
 
@@ -405,9 +406,9 @@ void FourChannelAdapter::write_Position(Tango::WAttribute &attr)
 	/*----- PROTECTED REGION ID(FourChannelAdapter::write_Position) ENABLED START -----*/
 
 		setCurrentPosition = w_val;
-		int encoder_value = (int) (setCurrentPosition+zeroPosition)/coeffToUnit;
+		int encoder_value = (int) (setCurrentPosition+zeroPosition)*coeffToUnit;
 
-		/* add her task */
+		/* add hear task */
 
 
 
