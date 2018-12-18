@@ -39,6 +39,7 @@
 //  ON      |  
 //  FAULT   |  
 //  MOVING  |  
+//  OFF     |  
 
 
 namespace FourChannelAdapter_ns

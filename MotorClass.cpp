@@ -141,6 +141,32 @@ void MotorClass::cmdMotorRconfig(Motor::sMotorConfig *smotorconfig) {
     sendPushPop((char *) smotorconfig,(char *) smotorconfig);
 }
 
+void MotorClass::cmdTaskRconfig(Motor::sTaskConfig *staskconfig) {
+    tx_packet.command = CMD_TASK_RCONFIG;
+    char *bytes;
+    bytes = (char *) staskconfig;
+    for(int i=1;i<sizeof(sTaskConfig);i++) bytes[i] = 0x00;                 // all zero except channel
+    sendPushPop((char *) staskconfig,(char *) staskconfig);
+}
+
+void MotorClass::cmdTaskWconfig(Motor::sTaskConfig *staskconfig) {
+    tx_packet.command = CMD_TASK_WCONFIG;
+    sendPushPop((char *) staskconfig,(char *) staskconfig);
+}
+
+void MotorClass::cmdTaskRead(Motor::sTaskRead *staskread) {
+    tx_packet.command = CMD_TASK_READ;
+    char *bytes;
+    bytes = (char *) staskread;
+    for(int i=1;i<sizeof(sTaskRead);i++) bytes[i] = 0x00;                 // all zero except channel
+    sendPushPop((char *) staskread,(char *) staskread);
+}
+
+void MotorClass::cmdTaskWrite(Motor::sTaskWrite *staskwrite) {
+    tx_packet.command = CMD_TASK_WRITE;
+    sendPushPop((char *) staskwrite,(char *) staskwrite);
+}
+
 bool MotorClass::cmdEcho() {
     tx_packet.command = CMD_ECHO;
     SendPacket();

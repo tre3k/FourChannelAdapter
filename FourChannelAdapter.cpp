@@ -405,6 +405,11 @@ namespace FourChannelAdapter_ns
 		/*----- PROTECTED REGION ID(FourChannelAdapter::write_Position) ENABLED START -----*/
 
 		setCurrentPosition = w_val;
+		int encoder_value = (int) (setCurrentPosition+zeroPosition)/coeffToUnit;
+
+		/* add her task */
+
+
 
 		/* NEED MOVE DRIVER TO CURRPOSTION */
 
@@ -481,7 +486,17 @@ namespace FourChannelAdapter_ns
 		DEBUG_STREAM << "FourChannelAdapter::StopMove()  - " << device_name << endl;
 		/*----- PROTECTED REGION ID(FourChannelAdapter::stop_move) ENABLED START -----*/
 
-		//	Add your own code
+#ifdef DEBUG_MESSAGE
+		printf("STOP MOTION!\n");
+#endif
+		Motor::sMotorRW s_motor,srx_motor;
+		s_motor.channel = (char) (channel & 0xff);
+		s_motor.flags = 0x00;			// clean all the flags
+		s_motor.stepl_left = 0x00;		// zero steps
+		srx_motor = s_motor;
+		mc->cmdMotorWrite(&srx_motor);
+
+		device_state = Tango::OFF;
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::stop_move
 	}
@@ -498,7 +513,12 @@ namespace FourChannelAdapter_ns
 		DEBUG_STREAM << "FourChannelAdapter::MoveToLefSteps()  - " << device_name << endl;
 		/*----- PROTECTED REGION ID(FourChannelAdapter::move_to_lef_steps) ENABLED START -----*/
 
-		//	Add your own code
+		Motor::sMotorRW s_motor,srx_motor;
+		s_motor.channel = (char) (channel & 0xff);
+		s_motor.flags = (char) (Motor::F_MOTOR_ENABLE | Motor::F_MOTOR_POWER_ON | Motor::F_MOTOR_DIRECTION);
+		s_motor.stepl_left = argin;
+		srx_motor = s_motor;
+		mc->cmdMotorWrite(&srx_motor);
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::move_to_lef_steps
 	}
@@ -515,7 +535,12 @@ namespace FourChannelAdapter_ns
 		DEBUG_STREAM << "FourChannelAdapter::MoveToRightSteps()  - " << device_name << endl;
 		/*----- PROTECTED REGION ID(FourChannelAdapter::move_to_right_steps) ENABLED START -----*/
 
-		//	Add your own code
+		Motor::sMotorRW s_motor,srx_motor;
+		s_motor.channel = (char) (channel & 0xff);
+		s_motor.flags = (char) (Motor::F_MOTOR_ENABLE | Motor::F_MOTOR_POWER_ON);
+		s_motor.stepl_left = argin;
+		srx_motor = s_motor;
+		mc->cmdMotorWrite(&srx_motor);
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::move_to_right_steps
 	}
