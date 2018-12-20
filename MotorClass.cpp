@@ -2,6 +2,7 @@
 // Created by Kirill Pshenichny on 17.12.18.
 //
 
+#include <poll.h>
 #include "MotorClass.h"
 
 using namespace Motor;
@@ -24,20 +25,27 @@ int MotorClass::rawWriteRead(char *in_buff, char *out_buff, int write_size, int 
     int spot = 0;
     int i = 0;
 
+    struct pollfd fds;
+    fds.fd = fd;
+    fds.events = POLLOUT;
+    if(poll(&fds,2,500) < 0) return -1;
+
     /* SEND */
 #ifdef DEBUG_MESSAGE
     printf("fd: %d, Send: ",fd);
 #endif
-    for(i=0;i<write_size;i++){
+    if(fds.revents & POLLOUT) {             //???
+        for (i = 0; i < write_size; i++) {
 #ifdef DEBUG_MESSAGE
-        if(i==5 || i==13) printf("  ");
-        printf("0x%.2x ", in_buff[i] & 0xff);
+            if(i==5 || i==13) printf("  ");
+            printf("0x%.2x ", in_buff[i] & 0xff);
 #endif
-        if(write(fd,&in_buff[i],1)==0) break;
+            if (write(fd, &in_buff[i], 1) == 0) break;
+        }
+#ifdef DEBUG_MESSAGE
+        printf("\n");
+#endif
     }
-#ifdef DEBUG_MESSAGE
-    printf("\n");
-#endif
 
     /* RECV */
 #ifdef DEBUG_MESSAGE
@@ -66,7 +74,7 @@ void MotorClass::setTitle() {
 
 char MotorClass::getCheckSum(char *buff){
     char check = 0x00;
-    for(int i=2;i<13;i++)check ^= buff[i];
+    for(int i=2;i<13;i++) check ^= buff[i];
     return check;
 }
 

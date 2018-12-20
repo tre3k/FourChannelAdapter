@@ -21,7 +21,7 @@ SerialPort::~SerialPort() {
 }
 
 void SerialPort::Open(const char *path) {
-    descriptor = open(path, O_RDWR|O_NOCTTY);
+    descriptor = open(path, O_RDWR|O_NOCTTY|O_SYNC);
     if(descriptor < 0){
 #ifdef DEBUG_MESSAGE
         printf("Error open!\n");

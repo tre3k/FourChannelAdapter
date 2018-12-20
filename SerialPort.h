@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdint.h>
+#include <poll.h>
 
 #ifdef DEBUG_MESSAGE
 #include <stdio.h>
