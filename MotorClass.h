@@ -5,7 +5,7 @@
 #ifndef FOURCHANNELADAPTER_MOTORCLASS_H
 #define FOURCHANNELADAPTER_MOTORCLASS_H
 
-#define DEBUG_MESSAGE
+//#define DEBUG_MESSAGE
 
 #include <termios.h>
 #include <fcntl.h>

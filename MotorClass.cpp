@@ -29,8 +29,8 @@ int MotorClass::rawWriteRead(char *in_buff, char *out_buff, int write_size, int 
     printf("fd: %d, Send: ",fd);
 #endif
     for(i=0;i<write_size;i++){
-        if(i==5 || i==13) printf("  ");
 #ifdef DEBUG_MESSAGE
+        if(i==5 || i==13) printf("  ");
         printf("0x%.2x ", in_buff[i] & 0xff);
 #endif
         if(write(fd,&in_buff[i],1)==0) break;

@@ -178,10 +178,11 @@ namespace FourChannelAdapter_ns
 
 		printf("%d, %d\n",ds_class->sP->controller_number,fd);
 
-		/* echo command */
-		// for test communication need add echo command
 
-		mc->cmdEcho();
+        /* echo command */
+		if(!mc->cmdEcho()){
+		    device_state = Tango::FAULT;
+		}
 
 		/* sensor configure */
 #ifdef DEBUG_MESSAGE
