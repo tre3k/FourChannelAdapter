@@ -2,7 +2,6 @@
 // Created by Kirill Pshenichny on 17.12.18.
 //
 
-#include <poll.h>
 #include "MotorClass.h"
 
 using namespace Motor;

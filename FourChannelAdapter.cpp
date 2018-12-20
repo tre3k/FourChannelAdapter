@@ -526,7 +526,7 @@ namespace FourChannelAdapter_ns
 		//	Set the attribute value
 
 		attr.set_value(attr_RightEnd_read);
-
+		
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::read_RightEnd
 	}
 //--------------------------------------------------------

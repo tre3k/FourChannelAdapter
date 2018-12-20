@@ -5,7 +5,7 @@
 #ifndef FOURCHANNELADAPTER_MOTORCLASS_H
 #define FOURCHANNELADAPTER_MOTORCLASS_H
 
-//#define DEBUG_MESSAGE
+#define DEBUG_MESSAGE
 
 #include <termios.h>
 #include <fcntl.h>
@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdint.h>
+#include <poll.h>
 
 #ifdef DEBUG_MESSAGE
 #include <stdio.h>

@@ -60,7 +60,6 @@ void SerialPort::Open(const char *path) {
 #ifdef DEBUG_MESSAGE
     printf("Open serial port ok! descriptor: %d\n",descriptor);
 
-
     int mode;
     int status = ioctl(descriptor,MOXA_GET_OP_MODE, &mode);
     printf("get mode: %d status: %d\n",mode, status);
