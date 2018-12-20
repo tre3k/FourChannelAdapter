@@ -17,6 +17,7 @@ void MotorClass::setChannel(int channel_value) {
 
 void MotorClass::setDevice(int device_value) {
     device = device_value;
+    setTitle();
 }
 
 int MotorClass::rawWriteRead(char *in_buff, char *out_buff, int write_size, int read_size) {
@@ -25,7 +26,7 @@ int MotorClass::rawWriteRead(char *in_buff, char *out_buff, int write_size, int 
 
     /* SEND */
 #ifdef DEBUG_MESSAGE
-    printf("Send: ");
+    printf("fd: %d, Send: ",fd);
 #endif
     for(i=0;i<write_size;i++){
         if(i==5 || i==13) printf("  ");

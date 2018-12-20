@@ -21,7 +21,6 @@ SerialPort::~SerialPort() {
 }
 
 void SerialPort::Open(const char *path) {
-
     descriptor = open(path, O_RDWR|O_NOCTTY);
     if(descriptor < 0){
 #ifdef DEBUG_MESSAGE
@@ -44,7 +43,9 @@ void SerialPort::Open(const char *path) {
     tty.c_cc[VTIME] = 5;
     tty.c_cc[VMIN] = 1;
 
-    setSpeed(speed);
+    cfsetospeed(&tty, (speed_t) B9600);
+    cfsetispeed(&tty, (speed_t) B9600);
+    //setSpeed(speed);
 
     tcflush(descriptor, TCIFLUSH);
     cfmakeraw(&tty);
@@ -56,6 +57,29 @@ void SerialPort::Open(const char *path) {
 #endif
         return;
     }
+#ifdef DEBUG_MESSAGE
+    printf("Open serial port ok! descriptor: %d\n",descriptor);
+
+
+    int mode;
+    int status = ioctl(descriptor,MOXA_GET_OP_MODE, &mode);
+    printf("get mode: %d status: %d\n",mode, status);
+
+    switch(mode){
+        case RS232_MODE:
+            printf("RS232 mode\n");
+            break;
+        case RS485_2WIRE_MODE:
+            printf("RS485 2Wire mode\n");
+            break;
+        case RS422_MODE:
+            printf("RS422 mode\n");
+            break;
+        case RS485_4WIRE_MODE:
+            printf("RS485 4Wire mode\n");
+            break;
+    }
+#endif
 }
 
 void SerialPort::Close() {

@@ -85,6 +85,47 @@ public:
 		{return (static_cast<FourChannelAdapter *>(dev))->is_ZeroPosition_allowed(ty);}
 };
 
+//	Attribute LeftEnd class definition
+class LeftEndAttrib: public Tango::Attr
+{
+public:
+	LeftEndAttrib():Attr("LeftEnd",
+			Tango::DEV_BOOLEAN, Tango::READ) {};
+	~LeftEndAttrib() {};
+	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
+		{(static_cast<FourChannelAdapter *>(dev))->read_LeftEnd(att);}
+	virtual bool is_allowed(Tango::DeviceImpl *dev,Tango::AttReqType ty)
+		{return (static_cast<FourChannelAdapter *>(dev))->is_LeftEnd_allowed(ty);}
+};
+
+//	Attribute RightEnd class definition
+class RightEndAttrib: public Tango::Attr
+{
+public:
+	RightEndAttrib():Attr("RightEnd",
+			Tango::DEV_BOOLEAN, Tango::READ) {};
+	~RightEndAttrib() {};
+	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
+		{(static_cast<FourChannelAdapter *>(dev))->read_RightEnd(att);}
+	virtual bool is_allowed(Tango::DeviceImpl *dev,Tango::AttReqType ty)
+		{return (static_cast<FourChannelAdapter *>(dev))->is_RightEnd_allowed(ty);}
+};
+
+//	Attribute rPosition class definition
+class rPositionAttrib: public Tango::Attr
+{
+public:
+	rPositionAttrib():Attr("rPosition",
+			Tango::DEV_DOUBLE, Tango::READ_WRITE) {};
+	~rPositionAttrib() {};
+	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
+		{(static_cast<FourChannelAdapter *>(dev))->read_rPosition(att);}
+	virtual void write(Tango::DeviceImpl *dev,Tango::WAttribute &att)
+		{(static_cast<FourChannelAdapter *>(dev))->write_rPosition(att);}
+	virtual bool is_allowed(Tango::DeviceImpl *dev,Tango::AttReqType ty)
+		{return (static_cast<FourChannelAdapter *>(dev))->is_rPosition_allowed(ty);}
+};
+
 
 //=========================================
 //	Define classes for commands

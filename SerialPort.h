@@ -21,6 +21,16 @@
 #endif
 
 namespace SP {
+    const unsigned int MOXA = 0x400;
+    const unsigned int MOXA_SET_OP_MODE = (MOXA + 66);
+    const unsigned int MOXA_GET_OP_MODE = (MOXA + 67);
+
+    enum {
+        RS232_MODE,
+        RS485_2WIRE_MODE,
+        RS422_MODE,
+        RS485_4WIRE_MODE
+    };
 
     class SerialPort {
     private:

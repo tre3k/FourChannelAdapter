@@ -62,8 +62,14 @@ class FourChannelAdapter : public TANGO_BASE_CLASS
 
 private:
 	int fd = 0;							// device file Descriptor
+	double currentrPosition;
 	double currentPosition;
+	double setrPosition;
 	double  setCurrentPosition;
+
+	double oldRPosition=0.0;
+
+	bool leftEnd, rightEnd;
 
 	Motor::MotorClass *mc;
 
@@ -77,17 +83,22 @@ public:
 	Tango::DevUShort	channel;
 	//	ZeroPosition:	
 	Tango::DevDouble	zeroPosition;
-	//	CoeffToUnit:	Coeff for convert encoder value to units
-	Tango::DevDouble	coeffToUnit;
+	//	encoderCoeffToUnit:	Coeff for convert encoder value to units
+	Tango::DevDouble	encoderCoeffToUnit;
 	//	Stepping:	
 	Tango::DevUShort	stepping;
 	//	Accelerate:	8
 	Tango::DevUShort	accelerate;
+	//	stepsCoeffToUnit:	convert motor step to physical unit
+	Tango::DevDouble	stepsCoeffToUnit;
 
 //	Attribute data members
 public:
 	Tango::DevDouble	*attr_Position_read;
 	Tango::DevDouble	*attr_ZeroPosition_read;
+	Tango::DevBoolean	*attr_LeftEnd_read;
+	Tango::DevBoolean	*attr_RightEnd_read;
+	Tango::DevDouble	*attr_rPosition_read;
 
 //	Constructors and destructors
 public:
@@ -176,6 +187,34 @@ public:
 	virtual void read_ZeroPosition(Tango::Attribute &attr);
 	virtual void write_ZeroPosition(Tango::WAttribute &attr);
 	virtual bool is_ZeroPosition_allowed(Tango::AttReqType type);
+/**
+ *	Attribute LeftEnd related methods
+ *	Description: 
+ *
+ *	Data type:	Tango::DevBoolean
+ *	Attr type:	Scalar
+ */
+	virtual void read_LeftEnd(Tango::Attribute &attr);
+	virtual bool is_LeftEnd_allowed(Tango::AttReqType type);
+/**
+ *	Attribute RightEnd related methods
+ *	Description: 
+ *
+ *	Data type:	Tango::DevBoolean
+ *	Attr type:	Scalar
+ */
+	virtual void read_RightEnd(Tango::Attribute &attr);
+	virtual bool is_RightEnd_allowed(Tango::AttReqType type);
+/**
+ *	Attribute rPosition related methods
+ *	Description: 
+ *
+ *	Data type:	Tango::DevDouble
+ *	Attr type:	Scalar
+ */
+	virtual void read_rPosition(Tango::Attribute &attr);
+	virtual void write_rPosition(Tango::WAttribute &attr);
+	virtual bool is_rPosition_allowed(Tango::AttReqType type);
 
 
 	//--------------------------------------------------------
@@ -233,7 +272,7 @@ public:
 
 /*----- PROTECTED REGION ID(FourChannelAdapter::Additional Method prototypes) ENABLED START -----*/
 
-//	Additional Method prototypes
+    char readEnds();
 
 /*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::Additional Method prototypes
 };

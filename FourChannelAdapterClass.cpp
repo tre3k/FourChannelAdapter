@@ -424,7 +424,7 @@ void FourChannelAdapterClass::set_default_property()
 	}
 	else
 		add_wiz_dev_prop(prop_name, prop_desc);
-	prop_name = "CoeffToUnit";
+	prop_name = "encoderCoeffToUnit";
 	prop_desc = "Coeff for convert encoder value to units";
 	prop_def  = "1.0";
 	vect_data.clear();
@@ -457,6 +457,20 @@ void FourChannelAdapterClass::set_default_property()
 	prop_def  = "8";
 	vect_data.clear();
 	vect_data.push_back("8");
+	if (prop_def.length()>0)
+	{
+		Tango::DbDatum	data(prop_name);
+		data << vect_data ;
+		dev_def_prop.push_back(data);
+		add_wiz_dev_prop(prop_name, prop_desc,  prop_def);
+	}
+	else
+		add_wiz_dev_prop(prop_name, prop_desc);
+	prop_name = "stepsCoeffToUnit";
+	prop_desc = "convert motor step to physical unit";
+	prop_def  = "1.0";
+	vect_data.clear();
+	vect_data.push_back("1.0");
 	if (prop_def.length()>0)
 	{
 		Tango::DbDatum	data(prop_name);
@@ -620,6 +634,78 @@ void FourChannelAdapterClass::attribute_factory(vector<Tango::Attr *> &att_list)
 	zeroposition->set_memorized();
 	zeroposition->set_memorized_init(false);
 	att_list.push_back(zeroposition);
+
+	//	Attribute : LeftEnd
+	LeftEndAttrib	*leftend = new LeftEndAttrib();
+	Tango::UserDefaultAttrProp	leftend_prop;
+	//	description	not set for LeftEnd
+	//	label	not set for LeftEnd
+	//	unit	not set for LeftEnd
+	//	standard_unit	not set for LeftEnd
+	//	display_unit	not set for LeftEnd
+	//	format	not set for LeftEnd
+	//	max_value	not set for LeftEnd
+	//	min_value	not set for LeftEnd
+	//	max_alarm	not set for LeftEnd
+	//	min_alarm	not set for LeftEnd
+	//	max_warning	not set for LeftEnd
+	//	min_warning	not set for LeftEnd
+	//	delta_t	not set for LeftEnd
+	//	delta_val	not set for LeftEnd
+	
+	leftend->set_default_properties(leftend_prop);
+	//	Not Polled
+	leftend->set_disp_level(Tango::OPERATOR);
+	//	Not Memorized
+	att_list.push_back(leftend);
+
+	//	Attribute : RightEnd
+	RightEndAttrib	*rightend = new RightEndAttrib();
+	Tango::UserDefaultAttrProp	rightend_prop;
+	//	description	not set for RightEnd
+	//	label	not set for RightEnd
+	//	unit	not set for RightEnd
+	//	standard_unit	not set for RightEnd
+	//	display_unit	not set for RightEnd
+	//	format	not set for RightEnd
+	//	max_value	not set for RightEnd
+	//	min_value	not set for RightEnd
+	//	max_alarm	not set for RightEnd
+	//	min_alarm	not set for RightEnd
+	//	max_warning	not set for RightEnd
+	//	min_warning	not set for RightEnd
+	//	delta_t	not set for RightEnd
+	//	delta_val	not set for RightEnd
+	
+	rightend->set_default_properties(rightend_prop);
+	//	Not Polled
+	rightend->set_disp_level(Tango::OPERATOR);
+	//	Not Memorized
+	att_list.push_back(rightend);
+
+	//	Attribute : rPosition
+	rPositionAttrib	*rposition = new rPositionAttrib();
+	Tango::UserDefaultAttrProp	rposition_prop;
+	//	description	not set for rPosition
+	//	label	not set for rPosition
+	//	unit	not set for rPosition
+	//	standard_unit	not set for rPosition
+	//	display_unit	not set for rPosition
+	//	format	not set for rPosition
+	//	max_value	not set for rPosition
+	//	min_value	not set for rPosition
+	//	max_alarm	not set for rPosition
+	//	min_alarm	not set for rPosition
+	//	max_warning	not set for rPosition
+	//	min_warning	not set for rPosition
+	//	delta_t	not set for rPosition
+	//	delta_val	not set for rPosition
+	
+	rposition->set_default_properties(rposition_prop);
+	//	Not Polled
+	rposition->set_disp_level(Tango::OPERATOR);
+	//	Not Memorized
+	att_list.push_back(rposition);
 
 
 	//	Create a list of static attributes

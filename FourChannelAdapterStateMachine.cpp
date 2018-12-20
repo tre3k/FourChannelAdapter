@@ -88,6 +88,58 @@ bool FourChannelAdapter::is_ZeroPosition_allowed(TANGO_UNUSED(Tango::AttReqType 
 	return true;
 }
 
+//--------------------------------------------------------
+/**
+ *	Method      : FourChannelAdapter::is_LeftEnd_allowed()
+ *	Description : Execution allowed for LeftEnd attribute
+ */
+//--------------------------------------------------------
+bool FourChannelAdapter::is_LeftEnd_allowed(TANGO_UNUSED(Tango::AttReqType type))
+{
+
+	//	Not any excluded states for LeftEnd attribute in read access.
+	/*----- PROTECTED REGION ID(FourChannelAdapter::LeftEndStateAllowed_READ) ENABLED START -----*/
+	
+	/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::LeftEndStateAllowed_READ
+	return true;
+}
+
+//--------------------------------------------------------
+/**
+ *	Method      : FourChannelAdapter::is_RightEnd_allowed()
+ *	Description : Execution allowed for RightEnd attribute
+ */
+//--------------------------------------------------------
+bool FourChannelAdapter::is_RightEnd_allowed(TANGO_UNUSED(Tango::AttReqType type))
+{
+
+	//	Not any excluded states for RightEnd attribute in read access.
+	/*----- PROTECTED REGION ID(FourChannelAdapter::RightEndStateAllowed_READ) ENABLED START -----*/
+	
+	/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::RightEndStateAllowed_READ
+	return true;
+}
+
+//--------------------------------------------------------
+/**
+ *	Method      : FourChannelAdapter::is_rPosition_allowed()
+ *	Description : Execution allowed for rPosition attribute
+ */
+//--------------------------------------------------------
+bool FourChannelAdapter::is_rPosition_allowed(TANGO_UNUSED(Tango::AttReqType type))
+{
+	//	Not any excluded states for rPosition attribute in Write access.
+	/*----- PROTECTED REGION ID(FourChannelAdapter::rPositionStateAllowed_WRITE) ENABLED START -----*/
+	
+	/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::rPositionStateAllowed_WRITE
+
+	//	Not any excluded states for rPosition attribute in read access.
+	/*----- PROTECTED REGION ID(FourChannelAdapter::rPositionStateAllowed_READ) ENABLED START -----*/
+	
+	/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::rPositionStateAllowed_READ
+	return true;
+}
+
 
 //=================================================
 //		Commands Allowed Methods
