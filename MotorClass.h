@@ -16,6 +16,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <poll.h>
+#include <boost/asio.hpp>
 
 #ifdef DEBUG_MESSAGE
 #include <stdio.h>
@@ -144,7 +145,7 @@ namespace Motor {
 
     private:
         int device;
-        int fd;
+        boost::asio::serial_port *sp;
 
         struct sPacket rx_packet;
         struct sPacket tx_packet;
@@ -160,7 +161,7 @@ namespace Motor {
         void sendPushPop(char * rxdata,char * txdata);
 
     public:
-        MotorClass(int fd_value);
+        MotorClass(boost::asio::serial_port *serial_port);
         void setChannel(int channel_value);
         void setDevice(int device_value);
 

@@ -145,13 +145,9 @@ namespace FourChannelAdapter_ns
 		//	Initialization before get_device_property() call
 
 		FourChannelAdapterClass *ds_class = (static_cast<FourChannelAdapterClass *>(get_device_class()));
-		fd = ds_class->sP->getDescriptor();
-		if(fd < 0){
-			device_status = "Error open device!";
-			device_state = Tango::FAULT;
-		}else{
-			device_state = Tango::OPEN;
-		}
+
+		sp = ds_class->sP->getDescriptor();
+
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::init_device_before
 
@@ -172,11 +168,11 @@ namespace FourChannelAdapter_ns
 #endif
 
 		/* new motor class */
-		mc = new Motor::MotorClass(fd);
+		mc = new Motor::MotorClass(sp);
 		mc->setChannel(channel);
 		mc->setDevice(ds_class->sP->controller_number);
 
-		printf("%d, %d\n",ds_class->sP->controller_number,fd);
+		//printf("%d, %d\n",ds_class->sP->controller_number,fd);
 
 
         /* echo command */

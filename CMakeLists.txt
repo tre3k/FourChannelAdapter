@@ -15,6 +15,7 @@ find_library(OMNIORB4_LIB omniORB4)
 find_library(OMNITHREAD_LIB omnithread)
 find_library(LOG4TANGO_LIB log4tango)
 find_library(ZMQ_LIB zmq)
+find_library(BOOST_SYSTEM_LIB boost_system)
 
 set(CMAKE_CXX_FLAGS -w)
 
@@ -31,4 +32,5 @@ target_link_libraries(FourChannelAdapter ${TANGO_LIB}
         ${OMNIORB4_LIB}
         ${OMNITHREAD_LIB}
         ${LOG4TANGO_LIB}
-        ${ZMQ_LIB})
+        ${ZMQ_LIB}
+        ${BOOST_SYSTEM_LIB})

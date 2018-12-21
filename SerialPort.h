@@ -17,6 +17,8 @@
 #include <stdint.h>
 #include <poll.h>
 
+#include <boost/asio.hpp>
+
 #ifdef DEBUG_MESSAGE
 #include <stdio.h>
 #endif
@@ -35,19 +37,20 @@ namespace SP {
 
     class SerialPort {
     private:
-        int descriptor;
         int flags;
         struct termios tty_old;
         struct termios tty;
 
     public:
         int controller_number = 0;
+        boost::asio::io_service ios;
+        boost::asio::serial_port *sp;
 
     public:
         SerialPort(const char *path);
         ~SerialPort();
         int speed;
-        int getDescriptor(void);
+        boost::asio::serial_port *getDescriptor(void);
         void Open(const char *path);
         void Close(void);
         void setSpeed(int value);

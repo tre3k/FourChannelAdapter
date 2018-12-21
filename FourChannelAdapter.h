@@ -61,7 +61,9 @@ class FourChannelAdapter : public TANGO_BASE_CLASS
 /*----- PROTECTED REGION ID(FourChannelAdapter::Data Members) ENABLED START -----*/
 
 private:
-	int fd = 0;							// device file Descriptor
+	//int fd = 0;							// device file Descriptor
+	boost::asio::serial_port *sp;
+
 	double currentrPosition;
 	double currentPosition;
 	double setrPosition;
