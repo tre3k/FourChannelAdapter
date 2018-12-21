@@ -50,7 +50,7 @@
 //
 //  Command name         |  Method name
 //================================================================
-//  State                |  Inherited (no method)
+//  State                |  dev_state
 //  Status               |  Inherited (no method)
 //  StopMove             |  stop_move
 //  MoveToLeftSteps      |  move_to_left_steps
@@ -585,6 +585,31 @@ void FourChannelAdapter::add_dynamic_attributes()
 
 //--------------------------------------------------------
 /**
+ *	Command State related method
+ *	Description: This command gets the device state (stored in its device_state data member) and returns it to the caller.
+ *
+ *	@returns Device state
+ */
+//--------------------------------------------------------
+Tango::DevState FourChannelAdapter::dev_state()
+{
+	DEBUG_STREAM << "FourChannelAdapter::State()  - " << device_name << endl;
+	/*----- PROTECTED REGION ID(FourChannelAdapter::dev_state) ENABLED START -----*/
+	
+	//Tango::DevState	argout = Tango::UNKNOWN; // replace by your own algorithm
+	//	Add your own code
+
+	getMotorState();
+	Tango::DevState	argout = device_state;
+	
+	/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::dev_state
+	set_state(argout);    // Give the state to Tango.
+	if (argout!=Tango::ALARM)
+		Tango::DeviceImpl::dev_state();
+	return get_state();  // Return it after Tango management.
+}
+//--------------------------------------------------------
+/**
  *	Command StopMove related method
  *	Description: 
  *
@@ -726,7 +751,7 @@ void FourChannelAdapter::add_dynamic_commands()
 		/* set state */
 		if(srx_motor.stepl_left != 0) device_state = Tango::MOVING;
 		if((srx_motor.flags & Motor::F_MOTOR_POWER_ON) && (srx_motor.stepl_left == 0)) device_state = Tango::ON;
-
+		if(!(srx_motor.flags & Motor::F_MOTOR_POWER_ON)) device_state = Tango::OFF;
 
 		return srx_motor.flags;
 	}

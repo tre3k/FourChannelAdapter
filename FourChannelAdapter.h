@@ -233,6 +233,13 @@ public:
 //	Command related methods
 public:
 	/**
+	 *	Command State related method
+	 *	Description: This command gets the device state (stored in its device_state data member) and returns it to the caller.
+	 *
+	 *	@returns Device state
+	 */
+	virtual Tango::DevState dev_state();
+	/**
 	 *	Command StopMove related method
 	 *	Description: 
 	 *
