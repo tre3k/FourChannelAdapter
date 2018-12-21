@@ -546,7 +546,7 @@ namespace FourChannelAdapter_ns
 		currentrPosition = (double) srx_motor.stepl_left/stepsCoeffToUnit;
 		*attr_rPosition_read = currentrPosition;
 
-		if(currentrPosition==0.0) stop_move();
+		if(currentrPosition==0.0 && device_state != Tango::STOP) stop_move();
 
 
 		//	Set the attribute value
@@ -646,7 +646,6 @@ namespace FourChannelAdapter_ns
 		s_motor.stepl_left = argin;
 		srx_motor = s_motor;
 		mc->cmdMotorWrite(&srx_motor);
-
 		device_status = Tango::MOVING;
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::move_to_left_steps
@@ -670,7 +669,6 @@ namespace FourChannelAdapter_ns
 		s_motor.stepl_left = argin;
 		srx_motor = s_motor;
 		mc->cmdMotorWrite(&srx_motor);
-
 		device_state = Tango::MOVING;
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::move_to_right_steps

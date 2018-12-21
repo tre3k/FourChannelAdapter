@@ -21,52 +21,36 @@ void MotorClass::setDevice(int device_value) {
 }
 
 int MotorClass::rawWriteRead(char *in_buff, char *out_buff, int write_size, int read_size) {
-    int spot = 0;
     int i = 0;
+    char tmp[16];
 
-    char tmp[64];
-
-    boost::asio::bu
-
-
-    //struct pollfd fds;
-    //fds.fd = fd;
-    //fds.events = POLLOUT;
-    //if(poll(&fds,2,500) < 0) return -1;
-
-    /* SEND */
 #ifdef DEBUG_MESSAGE
-    //printf("fd: %d, Send: ",fd);
+    printf("Send: ");
 #endif
-    //if(fds.revents & POLLOUT) {             //???
-        for (i = 0; i < write_size; i++) {
+    for (i = 0; i < write_size; i++) {
+        tmp[i] = in_buff[i];
 #ifdef DEBUG_MESSAGE
-            if(i==5 || i==13) printf("  ");
-            printf("0x%.2x ", in_buff[i] & 0xff);
+        if(i==5 || i==13) printf("  ");
+        printf("0x%.2x ", tmp[i] & 0xff);
 #endif
-            //sp->write_some(boost::asio::buffer(&in_buff[i]));
-            //if (write(fd, &in_buff[i], 1) == 0) break;
-        }
-#ifdef DEBUG_MESSAGE
-        printf("\n");
-#endif
-  //  }
+    }
+    printf("\n");
 
-    /* RECV */
+    sp->write_some(boost::asio::buffer(tmp));
+    int len = sp->read_some(boost::asio::buffer(tmp));
+
 #ifdef DEBUG_MESSAGE
     printf("Recv: ");
 #endif
     for(i=0;i<read_size;i++){
-        //spot += read(fd,&out_buff[i],1);
+        out_buff[i] = tmp[i];
 #ifdef DEBUG_MESSAGE
         if(i==5 || i==13) printf("  ");
         printf("0x%.2x ",out_buff[i] & 0xff);
 #endif
     }
-#ifdef DEBUG_MESSAGE
     printf("\n");
-#endif
-    return spot;
+    return len;
 }
 
 void MotorClass::setTitle() {
