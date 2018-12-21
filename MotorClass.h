@@ -142,6 +142,7 @@ namespace Motor {
     class MotorClass {
     public:
         int channel;
+        bool *busy;
 
     private:
         int device;

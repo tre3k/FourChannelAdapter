@@ -24,6 +24,8 @@ int MotorClass::rawWriteRead(char *in_buff, char *out_buff, int write_size, int 
     int i = 0;
     char tmp[16];
 
+    while(*busy);
+    *busy = true;
 #ifdef DEBUG_MESSAGE
     printf("Send: ");
 #endif
@@ -34,7 +36,9 @@ int MotorClass::rawWriteRead(char *in_buff, char *out_buff, int write_size, int 
         printf("0x%.2x ", tmp[i] & 0xff);
 #endif
     }
+#ifdef DEBUG_MESSAGE
     printf("\n");
+#endif
 
     sp->write_some(boost::asio::buffer(tmp));
     int len = sp->read_some(boost::asio::buffer(tmp));
@@ -49,7 +53,11 @@ int MotorClass::rawWriteRead(char *in_buff, char *out_buff, int write_size, int 
         printf("0x%.2x ",out_buff[i] & 0xff);
 #endif
     }
+#ifdef DEBUG_MESSAGE
     printf("\n");
+#endif
+
+    *busy = false;
     return len;
 }
 

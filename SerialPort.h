@@ -42,6 +42,7 @@ namespace SP {
         struct termios tty;
 
     public:
+        bool busy = false;
         int controller_number = 0;
         boost::asio::io_service ios;
         boost::asio::serial_port *sp;
@@ -51,7 +52,6 @@ namespace SP {
         ~SerialPort();
         int speed;
         boost::asio::serial_port *getDescriptor(void);
-        void Open(const char *path);
         void Close(void);
         void setSpeed(int value);
         void setFlags(int value);

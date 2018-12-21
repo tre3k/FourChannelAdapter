@@ -171,6 +171,7 @@ void FourChannelAdapter::init_device()
 		mc = new Motor::MotorClass(sp);
 		mc->setChannel(channel);
 		mc->setDevice(ds_class->sP->controller_number);
+		mc->busy = &(ds_class->sP->busy);
 
 		//printf("%d, %d\n",ds_class->sP->controller_number,fd);
 

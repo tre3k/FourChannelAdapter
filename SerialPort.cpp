@@ -18,10 +18,6 @@ SerialPort::~SerialPort() {
     Close();
 }
 
-void SerialPort::Open(const char *path) {
-
-}
-
 void SerialPort::Close() {
     sp->close();
     delete sp;
