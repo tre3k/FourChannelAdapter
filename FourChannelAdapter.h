@@ -274,7 +274,7 @@ public:
 
 /*----- PROTECTED REGION ID(FourChannelAdapter::Additional Method prototypes) ENABLED START -----*/
 
-    char readEnds();
+    char getMotorState();
 
 /*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::Additional Method prototypes
 };
