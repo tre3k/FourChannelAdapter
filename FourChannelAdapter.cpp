@@ -191,10 +191,16 @@ void FourChannelAdapter::init_device()
 		s_sensor_config.channel = (char) (channel & 0xff);
 		s_sensor_config.nbytes_nbits = mc->setNbitsNbytes(26,4);
 		s_sensor_config.nshift = 0x06;
-		s_sensor_config.flags = (char) (Motor::F_SENSOR_ENABLE|Motor::F_SENSOR_GRAYCODE);
+		if(encoderGrayCode) {
+            s_sensor_config.flags = (char) (Motor::F_SENSOR_ENABLE | Motor::F_SENSOR_GRAYCODE);
+        }else{
+            s_sensor_config.flags = (char) (Motor::F_SENSOR_ENABLE | Motor::F_SENSOR_GRAYCODE);
+		}
 		s_sensor_config.mask = 0x00000000;
 		srx_sensor_config = s_sensor_config;
 		mc->cmdSensorWconfig(&srx_sensor_config);
+
+		zeroPosition = encoderZeroPosition;
 
 
 		/* motor configure */
@@ -241,6 +247,8 @@ void FourChannelAdapter::get_device_property()
 	dev_prop.push_back(Tango::DbDatum("stepsCoeffToUnit"));
 	dev_prop.push_back(Tango::DbDatum("DevicePath"));
 	dev_prop.push_back(Tango::DbDatum("ControllerNumber"));
+	dev_prop.push_back(Tango::DbDatum("EncoderGrayCode"));
+	dev_prop.push_back(Tango::DbDatum("EncoderZeroPosition"));
 
 	//	is there at least one property to be read ?
 	if (dev_prop.size()>0)
@@ -353,6 +361,28 @@ void FourChannelAdapter::get_device_property()
 		}
 		//	And try to extract ControllerNumber value from database
 		if (dev_prop[i].is_empty()==false)	dev_prop[i]  >>  controllerNumber;
+
+		//	Try to initialize EncoderGrayCode from class property
+		cl_prop = ds_class->get_class_property(dev_prop[++i].name);
+		if (cl_prop.is_empty()==false)	cl_prop  >>  encoderGrayCode;
+		else {
+			//	Try to initialize EncoderGrayCode from default device value
+			def_prop = ds_class->get_default_device_property(dev_prop[i].name);
+			if (def_prop.is_empty()==false)	def_prop  >>  encoderGrayCode;
+		}
+		//	And try to extract EncoderGrayCode value from database
+		if (dev_prop[i].is_empty()==false)	dev_prop[i]  >>  encoderGrayCode;
+
+		//	Try to initialize EncoderZeroPosition from class property
+		cl_prop = ds_class->get_class_property(dev_prop[++i].name);
+		if (cl_prop.is_empty()==false)	cl_prop  >>  encoderZeroPosition;
+		else {
+			//	Try to initialize EncoderZeroPosition from default device value
+			def_prop = ds_class->get_default_device_property(dev_prop[i].name);
+			if (def_prop.is_empty()==false)	def_prop  >>  encoderZeroPosition;
+		}
+		//	And try to extract EncoderZeroPosition value from database
+		if (dev_prop[i].is_empty()==false)	dev_prop[i]  >>  encoderZeroPosition;
 
 	}
 
@@ -586,10 +616,10 @@ void FourChannelAdapter::write_rPosition(Tango::WAttribute &attr)
 		currentrPosition = value;
 
 		if(value > 0){
-			move_to_right_steps(value*stepsCoeffToUnit);
+            move_to_left_steps(value*stepsCoeffToUnit);
 		}else{
 			value = -value;
-			move_to_left_steps(value*stepsCoeffToUnit);
+            move_to_right_steps(value*stepsCoeffToUnit);
 		}
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::write_rPosition
@@ -774,8 +804,11 @@ void FourChannelAdapter::add_dynamic_commands()
 		srx_sensor = s_sensor;
 		mc->cmdSensorRead(&srx_sensor);
 
-		//currentPosition = mc->convertFromGrayCode(srx_sensor.value)/encoderCoeffToUnit - zeroPosition;
-		currentPosition = (double) srx_sensor.value/encoderCoeffToUnit - zeroPosition;
+		if(encoderGrayCode) {
+            currentPosition = (double) srx_sensor.value / encoderCoeffToUnit - zeroPosition;
+        }else {
+            currentPosition = (double) mc->convertFromGrayCode(srx_sensor.value) / encoderCoeffToUnit - zeroPosition;
+        }
 
 		/* set state */
 		if(srx_motor.stepl_left != 0) device_state = Tango::MOVING;

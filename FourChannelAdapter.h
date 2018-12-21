@@ -97,6 +97,10 @@ public:
 	string	devicePath;
 	//	ControllerNumber:	Just number of the controller (aka address)
 	Tango::DevShort	controllerNumber;
+	//	EncoderGrayCode:	Convert encoder value from gray code
+	Tango::DevBoolean	encoderGrayCode;
+	//	EncoderZeroPosition:	
+	Tango::DevDouble	encoderZeroPosition;
 
 //	Attribute data members
 public:
