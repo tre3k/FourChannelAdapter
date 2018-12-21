@@ -146,9 +146,6 @@ void FourChannelAdapter::init_device()
 
 		FourChannelAdapterClass *ds_class = (static_cast<FourChannelAdapterClass *>(get_device_class()));
 
-		sp = ds_class->sP->getDescriptor();
-
-
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::init_device_before
 	
 
@@ -167,15 +164,20 @@ void FourChannelAdapter::init_device()
 		printf("Channel: %d, Speed: %d Hz\n",channel,speed);
 #endif
 
+		if(ds_class->sP==NULL) {
+			ds_class->sP = new SP::SerialPort(devicePath.c_str());
+		}
+
+		sp = ds_class->sP->sp;
+		ds_class->sP->controller_number = controllerNumber;
+
 		/* new motor class */
 		mc = new Motor::MotorClass(sp);
 		mc->setChannel(channel);
 		mc->setDevice(ds_class->sP->controller_number);
 		mc->busy = &(ds_class->sP->busy);
 
-		//printf("%d, %d\n",ds_class->sP->controller_number,fd);
-
-
+		while((ds_class->sP->busy));
         /* echo command */
 		if(!mc->cmdEcho()){
 		    device_state = Tango::FAULT;
@@ -208,6 +210,7 @@ void FourChannelAdapter::init_device()
 		srx_motor_config = s_motor_config;
 		mc->cmdMotorWconfig(&srx_motor_config);
 
+		stop_move();
 
 		/*----- PROTECTED REGION END -----*/	//	FourChannelAdapter::init_device
 }
@@ -236,6 +239,8 @@ void FourChannelAdapter::get_device_property()
 	dev_prop.push_back(Tango::DbDatum("Stepping"));
 	dev_prop.push_back(Tango::DbDatum("Accelerate"));
 	dev_prop.push_back(Tango::DbDatum("stepsCoeffToUnit"));
+	dev_prop.push_back(Tango::DbDatum("DevicePath"));
+	dev_prop.push_back(Tango::DbDatum("ControllerNumber"));
 
 	//	is there at least one property to be read ?
 	if (dev_prop.size()>0)
@@ -326,6 +331,28 @@ void FourChannelAdapter::get_device_property()
 		}
 		//	And try to extract stepsCoeffToUnit value from database
 		if (dev_prop[i].is_empty()==false)	dev_prop[i]  >>  stepsCoeffToUnit;
+
+		//	Try to initialize DevicePath from class property
+		cl_prop = ds_class->get_class_property(dev_prop[++i].name);
+		if (cl_prop.is_empty()==false)	cl_prop  >>  devicePath;
+		else {
+			//	Try to initialize DevicePath from default device value
+			def_prop = ds_class->get_default_device_property(dev_prop[i].name);
+			if (def_prop.is_empty()==false)	def_prop  >>  devicePath;
+		}
+		//	And try to extract DevicePath value from database
+		if (dev_prop[i].is_empty()==false)	dev_prop[i]  >>  devicePath;
+
+		//	Try to initialize ControllerNumber from class property
+		cl_prop = ds_class->get_class_property(dev_prop[++i].name);
+		if (cl_prop.is_empty()==false)	cl_prop  >>  controllerNumber;
+		else {
+			//	Try to initialize ControllerNumber from default device value
+			def_prop = ds_class->get_default_device_property(dev_prop[i].name);
+			if (def_prop.is_empty()==false)	def_prop  >>  controllerNumber;
+		}
+		//	And try to extract ControllerNumber value from database
+		if (dev_prop[i].is_empty()==false)	dev_prop[i]  >>  controllerNumber;
 
 	}
 
@@ -747,7 +774,8 @@ void FourChannelAdapter::add_dynamic_commands()
 		srx_sensor = s_sensor;
 		mc->cmdSensorRead(&srx_sensor);
 
-		currentPosition = mc->convertFromGrayCode(srx_sensor.value)/encoderCoeffToUnit - zeroPosition;
+		//currentPosition = mc->convertFromGrayCode(srx_sensor.value)/encoderCoeffToUnit - zeroPosition;
+		currentPosition = (double) srx_sensor.value/encoderCoeffToUnit - zeroPosition;
 
 		/* set state */
 		if(srx_motor.stepl_left != 0) device_state = Tango::MOVING;

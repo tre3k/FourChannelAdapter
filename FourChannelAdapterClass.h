@@ -241,12 +241,6 @@ class FourChannelAdapterClass : public Tango::DeviceClass
 	
 	/*----- PROTECTED REGION END -----*/	//	FourChannelAdapterClass::Additionnal DServer data members
 
-	//	Class properties data members
-	public:
-		//	DevicePath:	Path to the device file for the MOXA RS485
-		string	devicePath;
-		//	ControllerNumber:	Number of controller
-		Tango::DevShort	controllerNumber;
 	public:
 		//	write class properties data members
 		Tango::DbData	cl_prop;

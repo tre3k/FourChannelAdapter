@@ -51,7 +51,7 @@ namespace SP {
         SerialPort(const char *path);
         ~SerialPort();
         int speed;
-        boost::asio::serial_port *getDescriptor(void);
+        //boost::asio::serial_port *getDescriptor(void);
         void Close(void);
         void setSpeed(int value);
         void setFlags(int value);

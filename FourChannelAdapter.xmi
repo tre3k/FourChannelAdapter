@@ -5,16 +5,6 @@
       <inheritances classname="Device_Impl" sourcePath=""/>
       <identification contact="at mail.ru - pshcyrill" author="pshcyrill" emailDomain="mail.ru" classFamily="Motion" siteSpecific="" platform="Unix Like" bus="Serial Line" manufacturer="PNPI Device" reference=""/>
     </description>
-    <classProperties name="DevicePath" description="Path to the device file for the MOXA RS485">
-      <type xsi:type="pogoDsl:StringType"/>
-      <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
-      <DefaultPropValue>/dev/ttyMI0</DefaultPropValue>
-    </classProperties>
-    <classProperties name="ControllerNumber" description="Number of controller">
-      <type xsi:type="pogoDsl:ShortType"/>
-      <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
-      <DefaultPropValue>0</DefaultPropValue>
-    </classProperties>
     <deviceProperties name="Speed" description="Speed int Hz">
       <type xsi:type="pogoDsl:UIntType"/>
       <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
@@ -49,6 +39,16 @@
       <type xsi:type="pogoDsl:DoubleType"/>
       <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
       <DefaultPropValue>1.0</DefaultPropValue>
+    </deviceProperties>
+    <deviceProperties name="DevicePath" description="">
+      <type xsi:type="pogoDsl:StringType"/>
+      <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
+      <DefaultPropValue>/dev/ttyMI0</DefaultPropValue>
+    </deviceProperties>
+    <deviceProperties name="ControllerNumber" description="Just number of the controller (aka address)">
+      <type xsi:type="pogoDsl:ShortType"/>
+      <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
+      <DefaultPropValue>0</DefaultPropValue>
     </deviceProperties>
     <commands name="State" description="This command gets the device state (stored in its device_state data member) and returns it to the caller." execMethod="dev_state" displayLevel="OPERATOR" polledPeriod="0" isDynamic="false">
       <argin description="none">

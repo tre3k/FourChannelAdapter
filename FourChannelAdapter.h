@@ -93,6 +93,10 @@ public:
 	Tango::DevUShort	accelerate;
 	//	stepsCoeffToUnit:	convert motor step to physical unit
 	Tango::DevDouble	stepsCoeffToUnit;
+	//	DevicePath:	
+	string	devicePath;
+	//	ControllerNumber:	Just number of the controller (aka address)
+	Tango::DevShort	controllerNumber;
 
 //	Attribute data members
 public:

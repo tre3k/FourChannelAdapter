@@ -11,6 +11,9 @@ SerialPort::SerialPort(const char *path) {
 
     sp = new boost::asio::serial_port(ios,path);
     sp->set_option(boost::asio::serial_port::baud_rate(9600));
+#ifdef DEBUG_MESSAGE
+    printf("PATH: %s\n",path);
+#endif
 
 }
 
@@ -27,9 +30,11 @@ void SerialPort::setSpeed(int value) {
 
 }
 
+/*
 boost::asio::serial_port *SerialPort::getDescriptor() {
     return sp;
 }
+ */
 
 int SerialPort::getSpeed() {
     return speed;

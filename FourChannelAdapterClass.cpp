@@ -75,13 +75,10 @@ FourChannelAdapterClass::FourChannelAdapterClass(string &s):Tango::DeviceClass(s
 {
 	cout2 << "Entering FourChannelAdapterClass constructor" << endl;
 	set_default_property();
-	get_class_property();
 	write_class_property();
 
 	/*----- PROTECTED REGION ID(FourChannelAdapterClass::constructor) ENABLED START -----*/
 
-	sPort = new SP::SerialPort(devicePath.c_str());
-    sPort->controller_number = controllerNumber;
 	sP = sPort;										// share link for other class
 
 	/*----- PROTECTED REGION END -----*/	//	FourChannelAdapterClass::constructor
@@ -280,60 +277,6 @@ Tango::DbDatum FourChannelAdapterClass::get_default_class_property(string &prop_
 	return Tango::DbDatum(prop_name);
 }
 
-//--------------------------------------------------------
-/**
- *	Method      : FourChannelAdapterClass::get_class_property()
- *	Description : Read database to initialize class property data members.
- */
-//--------------------------------------------------------
-void FourChannelAdapterClass::get_class_property()
-{
-	/*----- PROTECTED REGION ID(FourChannelAdapterClass::get_class_property_before) ENABLED START -----*/
-	
-	//	Initialize class property data members
-	
-	/*----- PROTECTED REGION END -----*/	//	FourChannelAdapterClass::get_class_property_before
-	//	Read class properties from database.
-	cl_prop.push_back(Tango::DbDatum("DevicePath"));
-	cl_prop.push_back(Tango::DbDatum("ControllerNumber"));
-	
-	//	Call database and extract values
-	if (Tango::Util::instance()->_UseDb==true)
-		get_db_class()->get_property(cl_prop);
-	Tango::DbDatum	def_prop;
-	int	i = -1;
-
-	//	Try to extract DevicePath value
-	if (cl_prop[++i].is_empty()==false)	cl_prop[i]  >>  devicePath;
-	else
-	{
-		//	Check default value for DevicePath
-		def_prop = get_default_class_property(cl_prop[i].name);
-		if (def_prop.is_empty()==false)
-		{
-			def_prop    >>  devicePath;
-			cl_prop[i]  <<  devicePath;
-		}
-	}
-	//	Try to extract ControllerNumber value
-	if (cl_prop[++i].is_empty()==false)	cl_prop[i]  >>  controllerNumber;
-	else
-	{
-		//	Check default value for ControllerNumber
-		def_prop = get_default_class_property(cl_prop[i].name);
-		if (def_prop.is_empty()==false)
-		{
-			def_prop    >>  controllerNumber;
-			cl_prop[i]  <<  controllerNumber;
-		}
-	}
-	/*----- PROTECTED REGION ID(FourChannelAdapterClass::get_class_property_after) ENABLED START -----*/
-	
-	//	Check class property data members init
-	
-	/*----- PROTECTED REGION END -----*/	//	FourChannelAdapterClass::get_class_property_after
-
-}
 
 //--------------------------------------------------------
 /**
@@ -352,34 +295,6 @@ void FourChannelAdapterClass::set_default_property()
 	vector<string>	vect_data;
 
 	//	Set Default Class Properties
-	prop_name = "DevicePath";
-	prop_desc = "Path to the device file for the MOXA RS485";
-	prop_def  = "/dev/ttyMI0";
-	vect_data.clear();
-	vect_data.push_back("/dev/ttyMI0");
-	if (prop_def.length()>0)
-	{
-		Tango::DbDatum	data(prop_name);
-		data << vect_data ;
-		cl_def_prop.push_back(data);
-		add_wiz_class_prop(prop_name, prop_desc,  prop_def);
-	}
-	else
-		add_wiz_class_prop(prop_name, prop_desc);
-	prop_name = "ControllerNumber";
-	prop_desc = "Number of controller";
-	prop_def  = "0";
-	vect_data.clear();
-	vect_data.push_back("0");
-	if (prop_def.length()>0)
-	{
-		Tango::DbDatum	data(prop_name);
-		data << vect_data ;
-		cl_def_prop.push_back(data);
-		add_wiz_class_prop(prop_name, prop_desc,  prop_def);
-	}
-	else
-		add_wiz_class_prop(prop_name, prop_desc);
 
 	//	Set Default device Properties
 	prop_name = "Speed";
@@ -471,6 +386,34 @@ void FourChannelAdapterClass::set_default_property()
 	prop_def  = "1.0";
 	vect_data.clear();
 	vect_data.push_back("1.0");
+	if (prop_def.length()>0)
+	{
+		Tango::DbDatum	data(prop_name);
+		data << vect_data ;
+		dev_def_prop.push_back(data);
+		add_wiz_dev_prop(prop_name, prop_desc,  prop_def);
+	}
+	else
+		add_wiz_dev_prop(prop_name, prop_desc);
+	prop_name = "DevicePath";
+	prop_desc = "";
+	prop_def  = "/dev/ttyMI0";
+	vect_data.clear();
+	vect_data.push_back("/dev/ttyMI0");
+	if (prop_def.length()>0)
+	{
+		Tango::DbDatum	data(prop_name);
+		data << vect_data ;
+		dev_def_prop.push_back(data);
+		add_wiz_dev_prop(prop_name, prop_desc,  prop_def);
+	}
+	else
+		add_wiz_dev_prop(prop_name, prop_desc);
+	prop_name = "ControllerNumber";
+	prop_desc = "Just number of the controller (aka address)";
+	prop_def  = "0";
+	vect_data.clear();
+	vect_data.push_back("0");
 	if (prop_def.length()>0)
 	{
 		Tango::DbDatum	data(prop_name);
